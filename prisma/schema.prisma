@@ -39,6 +39,11 @@ model IdentityChallenge {
   providerId String
 }
 
+// Temporary model to make sure NetworkCluster is defined in @prisma/client
+model Network {
+  id NetworkCluster @id
+}
+
 model User {
   id         String     @id @default(cuid())
   createdAt  DateTime   @default(now())
@@ -70,4 +75,11 @@ enum UserStatus {
   Active
   Created
   Inactive
+}
+
+enum NetworkCluster {
+  SolanaCustom
+  SolanaDevnet
+  SolanaMainnet
+  SolanaTestnet
 }

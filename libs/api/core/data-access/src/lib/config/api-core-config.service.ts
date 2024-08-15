@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { IdentityProvider } from '@prisma/client'
+import { IdentityProvider, NetworkCluster } from '@prisma/client'
 import { CookieOptions } from 'express-serve-static-core'
 import { AppConfig } from '../entity/app-config.entity'
 import { ApiCoreConfig } from './configuration'
@@ -222,6 +222,19 @@ export class ApiCoreConfigService {
     return this.service.get<string>('jwtSecret') as string
   }
 
+  get networkClusters(): Record<NetworkCluster, string> {
+    const clusterMap: { cluster: NetworkCluster; endpoint: string | undefined }[] = [
+      { cluster: NetworkCluster.SolanaCustom, endpoint: this.service.get<string>('networkClusterSolanaCustom') },
+      { cluster: NetworkCluster.SolanaDevnet, endpoint: this.service.get<string>('networkClusterSolanaDevnet') },
+      { cluster: NetworkCluster.SolanaMainnet, endpoint: this.service.get<string>('networkClusterSolanaMainnet') },
+      { cluster: NetworkCluster.SolanaTestnet, endpoint: this.service.get<string>('networkClusterSolanaTestnet') },
+    ]
+
+    return clusterMap.reduce((acc, key) => {
+      return key.endpoint ? { ...acc, [key.cluster]: key.endpoint } : acc
+    }, {} as Record<NetworkCluster, string>)
+  }
+
   get port() {
     return this.service.get<number>('port')
   }
@@ -255,3 +268,5 @@ export class ApiCoreConfigService {
     }
   }
 }
+
+export type NetworkClusterMap = Record<NetworkCluster, string>

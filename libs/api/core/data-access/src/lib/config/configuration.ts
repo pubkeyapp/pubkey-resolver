@@ -57,6 +57,10 @@ export interface ApiCoreConfig {
   environment: Env
   host: string
   jwtSecret: string
+  networkClusterSolanaCustom?: string
+  networkClusterSolanaDevnet?: string
+  networkClusterSolanaMainnet?: string
+  networkClusterSolanaTestnet?: string
   port: number
   sessionSecret: string
   webUrl: string
@@ -94,6 +98,10 @@ export function configuration(): ApiCoreConfig {
     environment: (process.env['NODE_ENV'] as Env) || 'development',
     host: process.env['HOST'] as string,
     jwtSecret: process.env['JWT_SECRET'] as string,
+    networkClusterSolanaCustom: process.env['NETWORK_CLUSTER_SOLANA_CUSTOM'],
+    networkClusterSolanaDevnet: process.env['NETWORK_CLUSTER_SOLANA_DEVNET'],
+    networkClusterSolanaMainnet: process.env['NETWORK_CLUSTER_SOLANA_MAINNET'],
+    networkClusterSolanaTestnet: process.env['NETWORK_CLUSTER_SOLANA_TESTNET'],
     port: parseInt(process.env['PORT'] as string, 10) || 3000,
     sessionSecret: process.env['SESSION_SECRET'] as string,
     webUrl: WEB_URL,
