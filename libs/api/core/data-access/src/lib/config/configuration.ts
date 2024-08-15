@@ -46,6 +46,8 @@ export interface ApiCoreConfig {
   // Solana Authentication
   authSolanaAdminIds: string[]
   authSolanaEnabled: boolean
+  // Cache
+  cacheBasePath: string
   // Cookies
   cookieDomains: string[]
   cookieName: string
@@ -83,6 +85,7 @@ export function configuration(): ApiCoreConfig {
     authRegisterEnabled: process.env['AUTH_REGISTER_ENABLED'] === 'true',
     authSolanaAdminIds: getFromEnvironment('AUTH_SOLANA_ADMIN_IDS'),
     authSolanaEnabled: process.env['AUTH_SOLANA_ENABLED'] === 'true',
+    cacheBasePath: process.env['CACHE_BASE_PATH'] as string,
     cookieDomains,
     cookieName: '__session',
     cookieSecure: process.env['COOKIE_SECURE'] === 'true',

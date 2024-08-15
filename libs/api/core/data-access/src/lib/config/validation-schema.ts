@@ -28,6 +28,8 @@ export const validationSchema = Joi.object({
   // Solana Authentication
   AUTH_SOLANA_ADMIN_IDS: Joi.string(),
   AUTH_SOLANA_ENABLED: Joi.boolean().default(true),
+  // Cache
+  CACHE_BASE_PATH: Joi.string().required(),
   // Cloak
   CLOAK_MASTER_KEY: Joi.string().required().error(new Error(`CLOAK_MASTER_KEY is required.`)),
   CLOAK_KEYCHAIN: Joi.string().required().error(new Error(`CLOAK_KEYCHAIN is required.`)),
