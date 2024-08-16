@@ -197,6 +197,7 @@ type Query {
   adminFindOneUser(userId: String!): User
   adminGetAccountInfo(input: AccountAdminResolveInput!): JSON
   adminResolveAccount(input: AccountAdminResolveInput!): JSON
+  adminResolveWallet(input: AccountAdminResolveInput!): JSON
   anonRequestIdentityChallenge(input: IdentityRequestChallengeInput!): IdentityChallenge
   appConfig: AppConfig!
   me: User

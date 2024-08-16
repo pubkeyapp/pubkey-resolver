@@ -47,6 +47,11 @@ export class ApiAccountAdminResolver {
     return this.service.resolver.resolveAccount(input)
   }
 
+  @Query(() => GraphQLJSON, { nullable: true })
+  adminResolveWallet(@Args('input') input: AccountAdminResolveInput) {
+    return this.service.resolver.resolveWallet(input)
+  }
+
   @Mutation(() => Account, { nullable: true })
   adminUpdateAccount(@Args('accountId') accountId: string, @Args('input') input: AccountAdminUpdateInput) {
     return this.service.admin.updateAccount(accountId, input)

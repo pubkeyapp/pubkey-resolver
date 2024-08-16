@@ -279,6 +279,7 @@ export type Query = {
   adminFindOneUser?: Maybe<User>
   adminGetAccountInfo?: Maybe<Scalars['JSON']['output']>
   adminResolveAccount?: Maybe<Scalars['JSON']['output']>
+  adminResolveWallet?: Maybe<Scalars['JSON']['output']>
   anonRequestIdentityChallenge?: Maybe<IdentityChallenge>
   appConfig: AppConfig
   me?: Maybe<User>
@@ -316,6 +317,10 @@ export type QueryAdminGetAccountInfoArgs = {
 }
 
 export type QueryAdminResolveAccountArgs = {
+  input: AccountAdminResolveInput
+}
+
+export type QueryAdminResolveWalletArgs = {
   input: AccountAdminResolveInput
 }
 
@@ -498,6 +503,12 @@ export type AdminResolveAccountQueryVariables = Exact<{
 }>
 
 export type AdminResolveAccountQuery = { __typename?: 'Query'; item?: any | null }
+
+export type AdminResolveWalletQueryVariables = Exact<{
+  input: AccountAdminResolveInput
+}>
+
+export type AdminResolveWalletQuery = { __typename?: 'Query'; item?: any | null }
 
 export type AdminCreateAccountMutationVariables = Exact<{
   input: AccountAdminCreateInput
@@ -1261,6 +1272,11 @@ export const AdminResolveAccountDocument = gql`
     item: adminResolveAccount(input: $input)
   }
 `
+export const AdminResolveWalletDocument = gql`
+  query adminResolveWallet($input: AccountAdminResolveInput!) {
+    item: adminResolveWallet(input: $input)
+  }
+`
 export const AdminCreateAccountDocument = gql`
   mutation adminCreateAccount($input: AccountAdminCreateInput!) {
     created: adminCreateAccount(input: $input) {
@@ -1518,6 +1534,7 @@ const AdminFindManyAccountDocumentString = print(AdminFindManyAccountDocument)
 const AdminFindOneAccountDocumentString = print(AdminFindOneAccountDocument)
 const AdminGetAccountInfoDocumentString = print(AdminGetAccountInfoDocument)
 const AdminResolveAccountDocumentString = print(AdminResolveAccountDocument)
+const AdminResolveWalletDocumentString = print(AdminResolveWalletDocument)
 const AdminCreateAccountDocumentString = print(AdminCreateAccountDocument)
 const AdminUpdateAccountDocumentString = print(AdminUpdateAccountDocument)
 const AdminDeleteAccountDocumentString = print(AdminDeleteAccountDocument)
@@ -1629,6 +1646,27 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
             ...wrappedRequestHeaders,
           }),
         'adminResolveAccount',
+        'query',
+        variables,
+      )
+    },
+    adminResolveWallet(
+      variables: AdminResolveWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminResolveWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminResolveWalletQuery>(AdminResolveWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminResolveWallet',
         'query',
         variables,
       )

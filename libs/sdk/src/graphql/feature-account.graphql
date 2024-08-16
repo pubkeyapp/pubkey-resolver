@@ -30,8 +30,13 @@ query adminFindOneAccount($accountId: String!) {
 query adminGetAccountInfo($input: AccountAdminResolveInput!) {
   item: adminGetAccountInfo(input: $input)
 }
+
 query adminResolveAccount($input: AccountAdminResolveInput!) {
   item: adminResolveAccount(input: $input)
+}
+
+query adminResolveWallet($input: AccountAdminResolveInput!) {
+  item: adminResolveWallet(input: $input)
 }
 
 mutation adminCreateAccount($input: AccountAdminCreateInput!) {

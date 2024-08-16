@@ -60,14 +60,7 @@ export function useAdminFindManyAccount(props: Partial<AccountAdminFindManyInput
     resolveAccount: (input: AccountAdminResolveInput) =>
       sdk
         .adminResolveAccount({ input })
-        .then((res) => {
-          if (res.data?.item) {
-            toastSuccess('Account resolved')
-          } else {
-            toastError('Account not resolved')
-          }
-          return res.data?.item
-        })
+        .then((res) => res.data?.item)
         .catch((err) => {
           toastError(err.message)
           return undefined

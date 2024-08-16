@@ -1,4 +1,4 @@
-import { AccountAdminResolveInput, AccountAdminUpdateInput, sdk } from '@pubkey-resolver/sdk'
+import { AccountAdminUpdateInput, sdk } from '@pubkey-resolver/sdk'
 import { toastError, toastSuccess } from '@pubkey-ui/core'
 import { useQuery } from '@tanstack/react-query'
 
@@ -30,19 +30,5 @@ export function useAdminFindOneAccount({ accountId }: { accountId: string }) {
           toastError(err.message)
           return false
         }),
-  }
-}
-
-export function useAdminGetAccountInfo(input: AccountAdminResolveInput) {
-  const query = useQuery({
-    queryKey: ['admin', 'get-account-info', input],
-    queryFn: () => sdk.adminGetAccountInfo({ input }).then((res) => res.data),
-    retry: 0,
-  })
-  const item = query.data?.item ?? undefined
-
-  return {
-    item,
-    query,
   }
 }

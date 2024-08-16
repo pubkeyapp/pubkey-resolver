@@ -49,6 +49,32 @@ export class ApiAccountResolverService {
     return null
   }
 
+  async resolveWallet({ address, cluster }: AccountResolveInput) {
+    ensureValidSolanaAddress(address)
+    const found = await this.core.data.account.findUnique({ where: { address_cluster: { address, cluster } } })
+    if (!found) {
+      throw new Error(`Account ${address} not found on ${cluster}`)
+    }
+    if (found.type !== AccountType.SolanaWallet) {
+      throw new Error(`Account ${address} is not a wallet on ${cluster}`)
+    }
+    const resolvers = await this.core.data.account.findMany({
+      where: {
+        type: { in: [AccountType.SolanaFungible, AccountType.SolanaNonFungible] },
+        cluster,
+      },
+    })
+    const resolversMap = {
+      [AccountType.SolanaFungible]: resolvers.filter((r) => r.type === AccountType.SolanaFungible),
+      [AccountType.SolanaNonFungible]: resolvers.filter((r) => r.type === AccountType.SolanaNonFungible),
+    }
+    this.logger.verbose(`Resolving wallet ${address} on ${cluster}`)
+
+    return {
+      resolversMap,
+    }
+  }
+
   async getAccountInfo({ address, cluster }: AccountResolveInput): Promise<SolanaAccountInfo> {
     return this.core.network
       .ensureConnection(cluster)

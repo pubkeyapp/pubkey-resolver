@@ -1,7 +1,18 @@
 import { Group } from '@mantine/core'
-import { UiBack, UiDebugModal, UiError, UiLoader, UiPage, UiTabRoute, UiTabRoutes } from '@pubkey-ui/core'
-import { useAdminFindOneAccount } from '@pubkey-resolver/web-account-data-access'
+import { Account, AccountType } from '@pubkey-resolver/sdk'
+import { useAdminFindOneAccount, useAdminResolveWallet } from '@pubkey-resolver/web-account-data-access'
 import { AccountUiItem } from '@pubkey-resolver/web-account-ui'
+import {
+  UiBack,
+  UiCard,
+  UiDebug,
+  UiDebugModal,
+  UiError,
+  UiLoader,
+  UiPage,
+  UiTabRoute,
+  UiTabRoutes,
+} from '@pubkey-ui/core'
 import { useParams } from 'react-router-dom'
 import { AdminAccountDetailInfoTab } from './admin-account-detail-info.tab'
 import { AdminAccountDetailSettingsTab } from './admin-account-detail-settings.tab'
@@ -30,6 +41,14 @@ export default function AdminAccountDetailFeature() {
     },
   ]
 
+  if (item.type === AccountType.SolanaWallet) {
+    tabs.push({
+      path: 'resolvers',
+      label: 'Resolvers',
+      element: <AdminAccountResolveWalletFeature item={item} />,
+    })
+  }
+
   return (
     <UiPage
       title={<AccountUiItem account={item} />}
@@ -41,6 +60,24 @@ export default function AdminAccountDetailFeature() {
       }
     >
       <UiTabRoutes tabs={tabs} />
+    </UiPage>
+  )
+}
+function AdminAccountResolveWalletFeature({ item }: { item: Account }) {
+  const { query } = useAdminResolveWallet({ address: item.address, cluster: item.cluster })
+
+  if (query.isLoading) {
+    return <UiLoader />
+  }
+  if (!query.data) {
+    return <UiError message={`${query.error?.message.toString()}`} />
+  }
+
+  return (
+    <UiPage leftAction={<UiBack />} title="Resolvers">
+      <UiCard>
+        <UiDebug data={query.data} open />
+      </UiCard>
     </UiPage>
   )
 }
