@@ -7,6 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id        String         @id @default(cuid())
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  type      AccountType
+  cluster   NetworkCluster
+  program   String
+  address   String
+  data      Json?
+  dataHash  String?
+  label     String?
+
+  @@unique([address, cluster])
+}
+
 model Identity {
   id           String              @id @default(cuid())
   createdAt    DateTime            @default(now())
@@ -39,11 +54,6 @@ model IdentityChallenge {
   providerId String
 }
 
-// Temporary model to make sure NetworkCluster is defined in @prisma/client
-model Network {
-  id NetworkCluster @id
-}
-
 model User {
   id         String     @id @default(cuid())
   createdAt  DateTime   @default(now())
@@ -58,12 +68,26 @@ model User {
   identities Identity[]
 }
 
+enum AccountType {
+  SolanaGenesis
+  SolanaFungible
+  SolanaNonFungible
+  SolanaWallet
+}
+
 enum IdentityProvider {
   Discord
   GitHub
   Google
   Solana
   Twitter
+}
+
+enum NetworkCluster {
+  SolanaCustom
+  SolanaDevnet
+  SolanaMainnet
+  SolanaTestnet
 }
 
 enum UserRole {
@@ -75,11 +99,4 @@ enum UserStatus {
   Active
   Created
   Inactive
-}
-
-enum NetworkCluster {
-  SolanaCustom
-  SolanaDevnet
-  SolanaMainnet
-  SolanaTestnet
 }

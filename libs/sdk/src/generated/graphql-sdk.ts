@@ -24,6 +24,65 @@ export type Scalars = {
   JSON: { input: any; output: any }
 }
 
+export type Account = {
+  __typename?: 'Account'
+  address: Scalars['String']['output']
+  cluster: NetworkCluster
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  data?: Maybe<Scalars['JSON']['output']>
+  dataHash?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  label?: Maybe<Scalars['String']['output']>
+  program: Scalars['String']['output']
+  type: AccountType
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+}
+
+export type AccountAdminCreateInput = {
+  address: Scalars['String']['input']
+  cluster: NetworkCluster
+  label?: InputMaybe<Scalars['String']['input']>
+  type: AccountType
+}
+
+export type AccountAdminFindManyInput = {
+  cluster?: InputMaybe<NetworkCluster>
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+  type?: InputMaybe<AccountType>
+}
+
+export type AccountAdminResolveInput = {
+  address: Scalars['String']['input']
+  cluster: NetworkCluster
+}
+
+export type AccountAdminUpdateInput = {
+  label?: InputMaybe<Scalars['String']['input']>
+}
+
+export type AccountPaging = {
+  __typename?: 'AccountPaging'
+  data: Array<Account>
+  meta: PagingMeta
+}
+
+export enum AccountType {
+  SolanaFungible = 'SolanaFungible',
+  SolanaGenesis = 'SolanaGenesis',
+  SolanaNonFungible = 'SolanaNonFungible',
+  SolanaWallet = 'SolanaWallet',
+}
+
+export type AccountUserFindManyInput = {
+  cluster?: InputMaybe<NetworkCluster>
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+  type?: InputMaybe<AccountType>
+}
+
 export type AppConfig = {
   __typename?: 'AppConfig'
   authDiscordEnabled: Scalars['Boolean']['output']
@@ -113,10 +172,13 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  adminCreateAccount?: Maybe<Account>
   adminCreateIdentity?: Maybe<Identity>
   adminCreateUser?: Maybe<User>
+  adminDeleteAccount?: Maybe<Scalars['Boolean']['output']>
   adminDeleteIdentity?: Maybe<Scalars['Boolean']['output']>
   adminDeleteUser?: Maybe<Scalars['Boolean']['output']>
+  adminUpdateAccount?: Maybe<Account>
   adminUpdateUser?: Maybe<User>
   anonVerifyIdentityChallenge?: Maybe<IdentityChallenge>
   login?: Maybe<User>
@@ -128,6 +190,10 @@ export type Mutation = {
   userVerifyIdentityChallenge?: Maybe<IdentityChallenge>
 }
 
+export type MutationAdminCreateAccountArgs = {
+  input: AccountAdminCreateInput
+}
+
 export type MutationAdminCreateIdentityArgs = {
   input: IdentityAdminCreateInput
 }
@@ -136,12 +202,21 @@ export type MutationAdminCreateUserArgs = {
   input: UserAdminCreateInput
 }
 
+export type MutationAdminDeleteAccountArgs = {
+  accountId: Scalars['String']['input']
+}
+
 export type MutationAdminDeleteIdentityArgs = {
   identityId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteUserArgs = {
   userId: Scalars['String']['input']
+}
+
+export type MutationAdminUpdateAccountArgs = {
+  accountId: Scalars['String']['input']
+  input: AccountAdminUpdateInput
 }
 
 export type MutationAdminUpdateUserArgs = {
@@ -177,6 +252,13 @@ export type MutationUserVerifyIdentityChallengeArgs = {
   input: IdentityVerifyChallengeInput
 }
 
+export enum NetworkCluster {
+  SolanaCustom = 'SolanaCustom',
+  SolanaDevnet = 'SolanaDevnet',
+  SolanaMainnet = 'SolanaMainnet',
+  SolanaTestnet = 'SolanaTestnet',
+}
+
 export type PagingMeta = {
   __typename?: 'PagingMeta'
   currentPage: Scalars['Int']['output']
@@ -190,17 +272,27 @@ export type PagingMeta = {
 
 export type Query = {
   __typename?: 'Query'
+  adminFindManyAccount: AccountPaging
   adminFindManyIdentity?: Maybe<Array<Identity>>
   adminFindManyUser: UserPaging
+  adminFindOneAccount?: Maybe<Account>
   adminFindOneUser?: Maybe<User>
+  adminGetAccountInfo?: Maybe<Scalars['JSON']['output']>
+  adminResolveAccount?: Maybe<Scalars['JSON']['output']>
   anonRequestIdentityChallenge?: Maybe<IdentityChallenge>
   appConfig: AppConfig
   me?: Maybe<User>
   uptime: Scalars['Float']['output']
+  userFindManyAccount: AccountPaging
   userFindManyIdentity?: Maybe<Array<Identity>>
   userFindManyUser: UserPaging
+  userFindOneAccount?: Maybe<Account>
   userFindOneUser?: Maybe<User>
   userRequestIdentityChallenge?: Maybe<IdentityChallenge>
+}
+
+export type QueryAdminFindManyAccountArgs = {
+  input: AccountAdminFindManyInput
 }
 
 export type QueryAdminFindManyIdentityArgs = {
@@ -211,12 +303,28 @@ export type QueryAdminFindManyUserArgs = {
   input: UserAdminFindManyInput
 }
 
+export type QueryAdminFindOneAccountArgs = {
+  accountId: Scalars['String']['input']
+}
+
 export type QueryAdminFindOneUserArgs = {
   userId: Scalars['String']['input']
 }
 
+export type QueryAdminGetAccountInfoArgs = {
+  input: AccountAdminResolveInput
+}
+
+export type QueryAdminResolveAccountArgs = {
+  input: AccountAdminResolveInput
+}
+
 export type QueryAnonRequestIdentityChallengeArgs = {
   input: IdentityRequestChallengeInput
+}
+
+export type QueryUserFindManyAccountArgs = {
+  input: AccountUserFindManyInput
 }
 
 export type QueryUserFindManyIdentityArgs = {
@@ -225,6 +333,10 @@ export type QueryUserFindManyIdentityArgs = {
 
 export type QueryUserFindManyUserArgs = {
   input: UserUserFindManyInput
+}
+
+export type QueryUserFindOneAccountArgs = {
+  accountId: Scalars['String']['input']
 }
 
 export type QueryUserFindOneUserArgs = {
@@ -304,6 +416,191 @@ export type UserUserUpdateInput = {
   avatarUrl?: InputMaybe<Scalars['String']['input']>
   developer?: InputMaybe<Scalars['Boolean']['input']>
   name?: InputMaybe<Scalars['String']['input']>
+}
+
+export type AccountDetailsFragment = {
+  __typename?: 'Account'
+  createdAt?: Date | null
+  id: string
+  type: AccountType
+  cluster: NetworkCluster
+  address: string
+  label?: string | null
+  data?: any | null
+  dataHash?: string | null
+  program: string
+  updatedAt?: Date | null
+}
+
+export type AdminFindManyAccountQueryVariables = Exact<{
+  input: AccountAdminFindManyInput
+}>
+
+export type AdminFindManyAccountQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'AccountPaging'
+    data: Array<{
+      __typename?: 'Account'
+      createdAt?: Date | null
+      id: string
+      type: AccountType
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      updatedAt?: Date | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type AdminFindOneAccountQueryVariables = Exact<{
+  accountId: Scalars['String']['input']
+}>
+
+export type AdminFindOneAccountQuery = {
+  __typename?: 'Query'
+  item?: {
+    __typename?: 'Account'
+    createdAt?: Date | null
+    id: string
+    type: AccountType
+    cluster: NetworkCluster
+    address: string
+    label?: string | null
+    data?: any | null
+    dataHash?: string | null
+    program: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type AdminGetAccountInfoQueryVariables = Exact<{
+  input: AccountAdminResolveInput
+}>
+
+export type AdminGetAccountInfoQuery = { __typename?: 'Query'; item?: any | null }
+
+export type AdminResolveAccountQueryVariables = Exact<{
+  input: AccountAdminResolveInput
+}>
+
+export type AdminResolveAccountQuery = { __typename?: 'Query'; item?: any | null }
+
+export type AdminCreateAccountMutationVariables = Exact<{
+  input: AccountAdminCreateInput
+}>
+
+export type AdminCreateAccountMutation = {
+  __typename?: 'Mutation'
+  created?: {
+    __typename?: 'Account'
+    createdAt?: Date | null
+    id: string
+    type: AccountType
+    cluster: NetworkCluster
+    address: string
+    label?: string | null
+    data?: any | null
+    dataHash?: string | null
+    program: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type AdminUpdateAccountMutationVariables = Exact<{
+  accountId: Scalars['String']['input']
+  input: AccountAdminUpdateInput
+}>
+
+export type AdminUpdateAccountMutation = {
+  __typename?: 'Mutation'
+  updated?: {
+    __typename?: 'Account'
+    createdAt?: Date | null
+    id: string
+    type: AccountType
+    cluster: NetworkCluster
+    address: string
+    label?: string | null
+    data?: any | null
+    dataHash?: string | null
+    program: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type AdminDeleteAccountMutationVariables = Exact<{
+  accountId: Scalars['String']['input']
+}>
+
+export type AdminDeleteAccountMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
+export type UserFindManyAccountQueryVariables = Exact<{
+  input: AccountUserFindManyInput
+}>
+
+export type UserFindManyAccountQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'AccountPaging'
+    data: Array<{
+      __typename?: 'Account'
+      createdAt?: Date | null
+      id: string
+      type: AccountType
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      updatedAt?: Date | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type UserFindOneAccountQueryVariables = Exact<{
+  accountId: Scalars['String']['input']
+}>
+
+export type UserFindOneAccountQuery = {
+  __typename?: 'Query'
+  item?: {
+    __typename?: 'Account'
+    createdAt?: Date | null
+    id: string
+    type: AccountType
+    cluster: NetworkCluster
+    address: string
+    label?: string | null
+    data?: any | null
+    dataHash?: string | null
+    program: string
+    updatedAt?: Date | null
+  } | null
 }
 
 export type LoginMutationVariables = Exact<{
@@ -854,6 +1151,20 @@ export type UserUpdateUserMutation = {
   } | null
 }
 
+export const AccountDetailsFragmentDoc = gql`
+  fragment AccountDetails on Account {
+    createdAt
+    id
+    type
+    cluster
+    address
+    label
+    data
+    dataHash
+    program
+    updatedAt
+  }
+`
 export const AppConfigDetailsFragmentDoc = gql`
   fragment AppConfigDetails on AppConfig {
     authDiscordEnabled
@@ -917,6 +1228,81 @@ export const UserDetailsFragmentDoc = gql`
     updatedAt
     username
   }
+`
+export const AdminFindManyAccountDocument = gql`
+  query adminFindManyAccount($input: AccountAdminFindManyInput!) {
+    paging: adminFindManyAccount(input: $input) {
+      data {
+        ...AccountDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${AccountDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const AdminFindOneAccountDocument = gql`
+  query adminFindOneAccount($accountId: String!) {
+    item: adminFindOneAccount(accountId: $accountId) {
+      ...AccountDetails
+    }
+  }
+  ${AccountDetailsFragmentDoc}
+`
+export const AdminGetAccountInfoDocument = gql`
+  query adminGetAccountInfo($input: AccountAdminResolveInput!) {
+    item: adminGetAccountInfo(input: $input)
+  }
+`
+export const AdminResolveAccountDocument = gql`
+  query adminResolveAccount($input: AccountAdminResolveInput!) {
+    item: adminResolveAccount(input: $input)
+  }
+`
+export const AdminCreateAccountDocument = gql`
+  mutation adminCreateAccount($input: AccountAdminCreateInput!) {
+    created: adminCreateAccount(input: $input) {
+      ...AccountDetails
+    }
+  }
+  ${AccountDetailsFragmentDoc}
+`
+export const AdminUpdateAccountDocument = gql`
+  mutation adminUpdateAccount($accountId: String!, $input: AccountAdminUpdateInput!) {
+    updated: adminUpdateAccount(accountId: $accountId, input: $input) {
+      ...AccountDetails
+    }
+  }
+  ${AccountDetailsFragmentDoc}
+`
+export const AdminDeleteAccountDocument = gql`
+  mutation adminDeleteAccount($accountId: String!) {
+    deleted: adminDeleteAccount(accountId: $accountId)
+  }
+`
+export const UserFindManyAccountDocument = gql`
+  query userFindManyAccount($input: AccountUserFindManyInput!) {
+    paging: userFindManyAccount(input: $input) {
+      data {
+        ...AccountDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${AccountDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const UserFindOneAccountDocument = gql`
+  query userFindOneAccount($accountId: String!) {
+    item: userFindOneAccount(accountId: $accountId) {
+      ...AccountDetails
+    }
+  }
+  ${AccountDetailsFragmentDoc}
 `
 export const LoginDocument = gql`
   mutation login($input: LoginInput!) {
@@ -1128,6 +1514,15 @@ export type SdkFunctionWrapper = <T>(
 ) => Promise<T>
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action()
+const AdminFindManyAccountDocumentString = print(AdminFindManyAccountDocument)
+const AdminFindOneAccountDocumentString = print(AdminFindOneAccountDocument)
+const AdminGetAccountInfoDocumentString = print(AdminGetAccountInfoDocument)
+const AdminResolveAccountDocumentString = print(AdminResolveAccountDocument)
+const AdminCreateAccountDocumentString = print(AdminCreateAccountDocument)
+const AdminUpdateAccountDocumentString = print(AdminUpdateAccountDocument)
+const AdminDeleteAccountDocumentString = print(AdminDeleteAccountDocument)
+const UserFindManyAccountDocumentString = print(UserFindManyAccountDocument)
+const UserFindOneAccountDocumentString = print(UserFindOneAccountDocument)
 const LoginDocumentString = print(LoginDocument)
 const LogoutDocumentString = print(LogoutDocument)
 const RegisterDocumentString = print(RegisterDocument)
@@ -1154,6 +1549,195 @@ const UserFindOneUserDocumentString = print(UserFindOneUserDocument)
 const UserUpdateUserDocumentString = print(UserUpdateUserDocument)
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    adminFindManyAccount(
+      variables: AdminFindManyAccountQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyAccountQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindManyAccountQuery>(AdminFindManyAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindManyAccount',
+        'query',
+        variables,
+      )
+    },
+    adminFindOneAccount(
+      variables: AdminFindOneAccountQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneAccountQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindOneAccountQuery>(AdminFindOneAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindOneAccount',
+        'query',
+        variables,
+      )
+    },
+    adminGetAccountInfo(
+      variables: AdminGetAccountInfoQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminGetAccountInfoQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminGetAccountInfoQuery>(AdminGetAccountInfoDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminGetAccountInfo',
+        'query',
+        variables,
+      )
+    },
+    adminResolveAccount(
+      variables: AdminResolveAccountQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminResolveAccountQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminResolveAccountQuery>(AdminResolveAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminResolveAccount',
+        'query',
+        variables,
+      )
+    },
+    adminCreateAccount(
+      variables: AdminCreateAccountMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateAccountMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminCreateAccountMutation>(AdminCreateAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminCreateAccount',
+        'mutation',
+        variables,
+      )
+    },
+    adminUpdateAccount(
+      variables: AdminUpdateAccountMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateAccountMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminUpdateAccountMutation>(AdminUpdateAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminUpdateAccount',
+        'mutation',
+        variables,
+      )
+    },
+    adminDeleteAccount(
+      variables: AdminDeleteAccountMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteAccountMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminDeleteAccountMutation>(AdminDeleteAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminDeleteAccount',
+        'mutation',
+        variables,
+      )
+    },
+    userFindManyAccount(
+      variables: UserFindManyAccountQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyAccountQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindManyAccountQuery>(UserFindManyAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindManyAccount',
+        'query',
+        variables,
+      )
+    },
+    userFindOneAccount(
+      variables: UserFindOneAccountQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindOneAccountQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindOneAccountQuery>(UserFindOneAccountDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindOneAccount',
+        'query',
+        variables,
+      )
+    },
     login(
       variables: LoginMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -1639,11 +2223,57 @@ export const isDefinedNonNullAny = (v: any): v is definedNonNullAny => v !== und
 
 export const definedNonNullAnySchema = z.any().refine((v) => isDefinedNonNullAny(v))
 
+export const AccountTypeSchema = z.nativeEnum(AccountType)
+
 export const IdentityProviderSchema = z.nativeEnum(IdentityProvider)
+
+export const NetworkClusterSchema = z.nativeEnum(NetworkCluster)
 
 export const UserRoleSchema = z.nativeEnum(UserRole)
 
 export const UserStatusSchema = z.nativeEnum(UserStatus)
+
+export function AccountAdminCreateInputSchema(): z.ZodObject<Properties<AccountAdminCreateInput>> {
+  return z.object({
+    address: z.string(),
+    cluster: NetworkClusterSchema,
+    label: z.string().nullish(),
+    type: AccountTypeSchema,
+  })
+}
+
+export function AccountAdminFindManyInputSchema(): z.ZodObject<Properties<AccountAdminFindManyInput>> {
+  return z.object({
+    cluster: NetworkClusterSchema.nullish(),
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
+    type: AccountTypeSchema.nullish(),
+  })
+}
+
+export function AccountAdminResolveInputSchema(): z.ZodObject<Properties<AccountAdminResolveInput>> {
+  return z.object({
+    address: z.string(),
+    cluster: NetworkClusterSchema,
+  })
+}
+
+export function AccountAdminUpdateInputSchema(): z.ZodObject<Properties<AccountAdminUpdateInput>> {
+  return z.object({
+    label: z.string().nullish(),
+  })
+}
+
+export function AccountUserFindManyInputSchema(): z.ZodObject<Properties<AccountUserFindManyInput>> {
+  return z.object({
+    cluster: NetworkClusterSchema.nullish(),
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
+    type: AccountTypeSchema.nullish(),
+  })
+}
 
 export function IdentityAdminCreateInputSchema(): z.ZodObject<Properties<IdentityAdminCreateInput>> {
   return z.object({

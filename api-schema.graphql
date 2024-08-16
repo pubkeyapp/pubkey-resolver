@@ -2,6 +2,63 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Account {
+  address: String!
+  cluster: NetworkCluster!
+  createdAt: DateTime
+  data: JSON
+  dataHash: String
+  id: String!
+  label: String
+  program: String!
+  type: AccountType!
+  updatedAt: DateTime
+}
+
+input AccountAdminCreateInput {
+  address: String!
+  cluster: NetworkCluster!
+  label: String
+  type: AccountType!
+}
+
+input AccountAdminFindManyInput {
+  cluster: NetworkCluster
+  limit: Int = 10
+  page: Int = 1
+  search: String
+  type: AccountType
+}
+
+input AccountAdminResolveInput {
+  address: String!
+  cluster: NetworkCluster!
+}
+
+input AccountAdminUpdateInput {
+  label: String
+}
+
+type AccountPaging {
+  data: [Account!]!
+  meta: PagingMeta!
+}
+
+enum AccountType {
+  SolanaFungible
+  SolanaGenesis
+  SolanaNonFungible
+  SolanaWallet
+}
+
+input AccountUserFindManyInput {
+  cluster: NetworkCluster
+  limit: Int = 10
+  page: Int = 1
+  search: String
+  type: AccountType
+}
+
 type AppConfig {
   authDiscordEnabled: Boolean!
   authGithubEnabled: Boolean!
@@ -97,10 +154,13 @@ input LoginInput {
 }
 
 type Mutation {
+  adminCreateAccount(input: AccountAdminCreateInput!): Account
   adminCreateIdentity(input: IdentityAdminCreateInput!): Identity
   adminCreateUser(input: UserAdminCreateInput!): User
+  adminDeleteAccount(accountId: String!): Boolean
   adminDeleteIdentity(identityId: String!): Boolean
   adminDeleteUser(userId: String!): Boolean
+  adminUpdateAccount(accountId: String!, input: AccountAdminUpdateInput!): Account
   adminUpdateUser(input: UserAdminUpdateInput!, userId: String!): User
   anonVerifyIdentityChallenge(input: IdentityVerifyChallengeInput!): IdentityChallenge
   login(input: LoginInput!): User
@@ -110,6 +170,13 @@ type Mutation {
   userLinkIdentity(input: IdentityUserLinkInput!): Identity
   userUpdateUser(input: UserUserUpdateInput!): User
   userVerifyIdentityChallenge(input: IdentityVerifyChallengeInput!): IdentityChallenge
+}
+
+enum NetworkCluster {
+  SolanaCustom
+  SolanaDevnet
+  SolanaMainnet
+  SolanaTestnet
 }
 
 type PagingMeta {
@@ -123,15 +190,21 @@ type PagingMeta {
 }
 
 type Query {
+  adminFindManyAccount(input: AccountAdminFindManyInput!): AccountPaging!
   adminFindManyIdentity(input: IdentityAdminFindManyInput!): [Identity!]
   adminFindManyUser(input: UserAdminFindManyInput!): UserPaging!
+  adminFindOneAccount(accountId: String!): Account
   adminFindOneUser(userId: String!): User
+  adminGetAccountInfo(input: AccountAdminResolveInput!): JSON
+  adminResolveAccount(input: AccountAdminResolveInput!): JSON
   anonRequestIdentityChallenge(input: IdentityRequestChallengeInput!): IdentityChallenge
   appConfig: AppConfig!
   me: User
   uptime: Float!
+  userFindManyAccount(input: AccountUserFindManyInput!): AccountPaging!
   userFindManyIdentity(input: IdentityUserFindManyInput!): [Identity!]
   userFindManyUser(input: UserUserFindManyInput!): UserPaging!
+  userFindOneAccount(accountId: String!): Account
   userFindOneUser(username: String!): User
   userRequestIdentityChallenge(input: IdentityRequestChallengeInput!): IdentityChallenge
 }

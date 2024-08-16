@@ -1,0 +1,68 @@
+fragment AccountDetails on Account {
+  createdAt
+  id
+  type
+  cluster
+  address
+  label
+  data
+  dataHash
+  program
+  updatedAt
+}
+
+query adminFindManyAccount($input: AccountAdminFindManyInput!) {
+  paging: adminFindManyAccount(input: $input) {
+    data {
+      ...AccountDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query adminFindOneAccount($accountId: String!) {
+  item: adminFindOneAccount(accountId: $accountId) {
+    ...AccountDetails
+  }
+}
+query adminGetAccountInfo($input: AccountAdminResolveInput!) {
+  item: adminGetAccountInfo(input: $input)
+}
+query adminResolveAccount($input: AccountAdminResolveInput!) {
+  item: adminResolveAccount(input: $input)
+}
+
+mutation adminCreateAccount($input: AccountAdminCreateInput!) {
+  created: adminCreateAccount(input: $input) {
+    ...AccountDetails
+  }
+}
+
+mutation adminUpdateAccount($accountId: String!, $input: AccountAdminUpdateInput!) {
+  updated: adminUpdateAccount(accountId: $accountId, input: $input) {
+    ...AccountDetails
+  }
+}
+
+mutation adminDeleteAccount($accountId: String!) {
+  deleted: adminDeleteAccount(accountId: $accountId)
+}
+
+query userFindManyAccount($input: AccountUserFindManyInput!) {
+  paging: userFindManyAccount(input: $input) {
+    data {
+      ...AccountDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query userFindOneAccount($accountId: String!) {
+  item: userFindOneAccount(accountId: $accountId) {
+    ...AccountDetails
+  }
+}

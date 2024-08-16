@@ -1,3 +1,6 @@
+import { dasApi } from '@metaplex-foundation/digital-asset-standard-api'
+import { createUmi, Umi } from '@metaplex-foundation/umi'
+import { web3JsRpc } from '@metaplex-foundation/umi-rpc-web3js'
 import { Injectable, Logger } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { NetworkCluster } from '@prisma/client'
@@ -10,6 +13,7 @@ export class ApiCoreNetworkService {
   private readonly logger = new Logger(ApiCoreNetworkService.name)
   private readonly connectionMap = new Map<NetworkCluster, Connection>()
   private readonly clusterMap: NetworkClusterMap = this.config.networkClusters
+  private readonly umis: Map<NetworkCluster, Umi> = new Map()
   constructor(readonly config: ApiCoreConfigService) {}
 
   @OnEvent(CORE_APP_STARTED)
@@ -54,6 +58,23 @@ export class ApiCoreNetworkService {
       const endpoint = this.ensureClusterEndpoint(cluster)
       this.connectionMap.set(cluster, new Connection(endpoint, 'confirmed'))
     }
-    return this.connectionMap.get(cluster)
+    const connection = this.connectionMap.get(cluster)
+    if (!connection) {
+      throw new Error(`getConnection: Error getting connection for cluster: ${cluster}`)
+    }
+    return connection
+  }
+
+  getUmi(cluster: NetworkCluster) {
+    if (!this.umis.has(cluster)) {
+      const endpoint = this.ensureClusterEndpoint(cluster)
+      this.umis.set(cluster, createUmi().use(web3JsRpc(endpoint, 'confirmed')).use(dasApi()))
+      this.logger.verbose(`getUmi: Network created for cluster: ${cluster}`)
+    }
+    const umi = this.umis.get(cluster)
+    if (!umi) {
+      throw new Error(`getUmi: Error getting network for cluster: ${cluster}`)
+    }
+    return umi
   }
 }
