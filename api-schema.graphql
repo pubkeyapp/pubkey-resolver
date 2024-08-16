@@ -14,7 +14,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Identity {
-  challenges: [IdentityChallenge!]
   createdAt: DateTime!
   expired: Boolean
   id: String!
@@ -37,19 +36,6 @@ input IdentityAdminCreateInput {
 input IdentityAdminFindManyInput {
   ownerId: String
   provider: IdentityProvider
-}
-
-type IdentityChallenge {
-  challenge: String!
-  createdAt: DateTime!
-  id: String!
-  ip: String!
-  provider: IdentityProvider!
-  providerId: String!
-  signature: String
-  updatedAt: DateTime!
-  userAgent: String!
-  verified: Boolean!
 }
 
 enum IdentityProvider {

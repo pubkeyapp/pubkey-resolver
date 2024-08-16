@@ -48,7 +48,6 @@ export class ApiIdentityDataAdminService {
       },
       orderBy: [{ provider: 'asc' }, { providerId: 'asc' }],
       include: {
-        challenges: { orderBy: { createdAt: 'desc' } },
         owner: !input.ownerId,
       },
     })

@@ -11,25 +11,9 @@ fragment IdentityDetails on Identity {
   verified
 }
 
-fragment IdentityChallengeDetails on IdentityChallenge {
-  id
-  createdAt
-  updatedAt
-  provider
-  providerId
-  challenge
-  signature
-  ip
-  userAgent
-  verified
-}
-
 query adminFindManyIdentity($input: IdentityAdminFindManyInput!) {
   items: adminFindManyIdentity(input: $input) {
     ...IdentityDetails
-    challenges {
-      ...IdentityChallengeDetails
-    }
     owner {
       ...UserDetails
     }

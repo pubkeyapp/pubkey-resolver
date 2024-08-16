@@ -33,7 +33,6 @@ export type AppConfig = {
 
 export type Identity = {
   __typename?: 'Identity'
-  challenges?: Maybe<Array<IdentityChallenge>>
   createdAt: Scalars['DateTime']['output']
   expired?: Maybe<Scalars['Boolean']['output']>
   id: Scalars['String']['output']
@@ -56,20 +55,6 @@ export type IdentityAdminCreateInput = {
 export type IdentityAdminFindManyInput = {
   ownerId?: InputMaybe<Scalars['String']['input']>
   provider?: InputMaybe<IdentityProvider>
-}
-
-export type IdentityChallenge = {
-  __typename?: 'IdentityChallenge'
-  challenge: Scalars['String']['output']
-  createdAt: Scalars['DateTime']['output']
-  id: Scalars['String']['output']
-  ip: Scalars['String']['output']
-  provider: IdentityProvider
-  providerId: Scalars['String']['output']
-  signature?: Maybe<Scalars['String']['output']>
-  updatedAt: Scalars['DateTime']['output']
-  userAgent: Scalars['String']['output']
-  verified: Scalars['Boolean']['output']
 }
 
 export enum IdentityProvider {
@@ -484,20 +469,6 @@ export type IdentityDetailsFragment = {
   verified?: boolean | null
 }
 
-export type IdentityChallengeDetailsFragment = {
-  __typename?: 'IdentityChallenge'
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  provider: IdentityProvider
-  providerId: string
-  challenge: string
-  signature?: string | null
-  ip: string
-  userAgent: string
-  verified: boolean
-}
-
 export type AdminFindManyIdentityQueryVariables = Exact<{
   input: IdentityAdminFindManyInput
 }>
@@ -516,19 +487,6 @@ export type AdminFindManyIdentityQuery = {
     updatedAt: Date
     url?: string | null
     verified?: boolean | null
-    challenges?: Array<{
-      __typename?: 'IdentityChallenge'
-      id: string
-      createdAt: Date
-      updatedAt: Date
-      provider: IdentityProvider
-      providerId: string
-      challenge: string
-      signature?: string | null
-      ip: string
-      userAgent: string
-      verified: boolean
-    }> | null
     owner?: {
       __typename?: 'User'
       avatarUrl?: string | null
@@ -1030,20 +988,6 @@ export const IdentityDetailsFragmentDoc = gql`
     verified
   }
 `
-export const IdentityChallengeDetailsFragmentDoc = gql`
-  fragment IdentityChallengeDetails on IdentityChallenge {
-    id
-    createdAt
-    updatedAt
-    provider
-    providerId
-    challenge
-    signature
-    ip
-    userAgent
-    verified
-  }
-`
 export const IndexDetailsFragmentDoc = gql`
   fragment IndexDetails on Index {
     createdAt
@@ -1118,16 +1062,12 @@ export const AdminFindManyIdentityDocument = gql`
   query adminFindManyIdentity($input: IdentityAdminFindManyInput!) {
     items: adminFindManyIdentity(input: $input) {
       ...IdentityDetails
-      challenges {
-        ...IdentityChallengeDetails
-      }
       owner {
         ...UserDetails
       }
     }
   }
   ${IdentityDetailsFragmentDoc}
-  ${IdentityChallengeDetailsFragmentDoc}
   ${UserDetailsFragmentDoc}
 `
 export const AdminCreateIdentityDocument = gql`

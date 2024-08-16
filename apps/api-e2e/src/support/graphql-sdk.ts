@@ -1,6 +1,4 @@
-import { getGraphQLSdk, IdentityProvider, Sdk } from '@pubkey-resolver/sdk'
-import { Keypair } from '@solana/web3.js'
-import * as nacl from 'tweetnacl'
+import { getGraphQLSdk, Sdk } from '@pubkey-resolver/sdk'
 import { getApiUrl } from './get-api.url'
 import { alice, bob, TestUser } from './user-identities'
 
@@ -19,25 +17,4 @@ export async function getAliceCookie() {
 }
 export async function getBobCookie() {
   return getUserCookie(bob)
-}
-
-export async function getIdentityChallenge(user: TestUser) {
-  const cookie = await getUserCookie(user)
-  return sdk.userRequestIdentityChallenge(
-    {
-      input: {
-        provider: IdentityProvider.Solana,
-        providerId: user.solana.publicKey,
-      },
-    },
-    { cookie },
-  )
-}
-
-export function getUserKeypair(user: TestUser): Keypair {
-  return Keypair.fromSecretKey(Uint8Array.from(user.solana.secret))
-}
-
-export function signMessage(user: TestUser, message: string) {
-  return nacl.sign.detached(new TextEncoder().encode(message), Uint8Array.from(user.solana.secret))
 }

@@ -1,7 +1,6 @@
 import { Field, HideField, ObjectType } from '@nestjs/graphql'
 import { User } from '@pubkey-resolver/api-user-data-access'
 import { GraphQLJSON } from 'graphql-scalars'
-import { IdentityChallenge } from './identity-challenge.entity'
 import { IdentityProvider } from './identity-provider.enum'
 
 @ObjectType()
@@ -25,8 +24,6 @@ export class Identity {
   verified?: boolean
   @Field(() => User, { nullable: true })
   owner?: User
-  @Field(() => [IdentityChallenge], { nullable: true })
-  challenges?: IdentityChallenge[]
   @HideField()
   accessToken?: string
   @HideField()
