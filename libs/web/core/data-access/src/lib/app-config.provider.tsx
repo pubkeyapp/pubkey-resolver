@@ -20,37 +20,13 @@ const Context = createContext<AuthProviderContext>({} as AuthProviderContext)
 export function AppConfigProvider({ children }: { children: ReactNode }) {
   const authEnabled = useMemo(() => {
     if (!appConfig) return false
-    const {
-      authDiscordEnabled,
-      authGithubEnabled,
-      authGoogleEnabled,
-      authPasswordEnabled,
-      authRegisterEnabled,
-      authSolanaEnabled,
-      authTwitterEnabled,
-    } = appConfig as AppConfig
-    return (
-      authDiscordEnabled ||
-      authGithubEnabled ||
-      authGoogleEnabled ||
-      authRegisterEnabled ||
-      authPasswordEnabled ||
-      authSolanaEnabled ||
-      authTwitterEnabled
-    )
+    const { authGithubEnabled, authPasswordEnabled, authRegisterEnabled } = appConfig as AppConfig
+    return authGithubEnabled || authRegisterEnabled || authPasswordEnabled
   }, [appConfig])
 
   const enabledProviders: IdentityProvider[] = useMemo(
     () =>
-      appConfig
-        ? ([
-            appConfig.authDiscordEnabled && IdentityProvider.Discord,
-            appConfig.authGithubEnabled && IdentityProvider.GitHub,
-            appConfig.authGoogleEnabled && IdentityProvider.Google,
-            appConfig.authSolanaEnabled && IdentityProvider.Solana,
-            appConfig.authTwitterEnabled && IdentityProvider.Twitter,
-          ].filter(Boolean) as IdentityProvider[])
-        : [],
+      appConfig ? ([appConfig.authGithubEnabled && IdentityProvider.GitHub].filter(Boolean) as IdentityProvider[]) : [],
     [appConfig],
   )
 

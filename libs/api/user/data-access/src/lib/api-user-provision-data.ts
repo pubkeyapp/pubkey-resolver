@@ -1,4 +1,4 @@
-import { IdentityProvider, Prisma, UserRole, UserStatus } from '@prisma/client'
+import { Prisma, UserRole, UserStatus } from '@prisma/client'
 
 export const provisionUsers: Prisma.UserCreateInput[] = [
   {
@@ -6,9 +6,6 @@ export const provisionUsers: Prisma.UserCreateInput[] = [
     password: 'password',
     role: UserRole.Admin,
     developer: true,
-    identities: {
-      create: [{ provider: IdentityProvider.Solana, providerId: 'ALiC98dw6j47Skrxje3zBN4jTA11w67JRjQRBeZH3BRG' }],
-    },
   },
   {
     username: 'bob',

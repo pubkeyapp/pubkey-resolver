@@ -6,7 +6,7 @@ import { getEnumOptions, UiStack } from '@pubkey-ui/core'
 export function AuthUiIdentityCreateForm({ submit }: { submit: (res: IdentityAdminCreateInput) => Promise<boolean> }) {
   const form = useForm<IdentityAdminCreateInput>({
     initialValues: {
-      provider: IdentityProvider.Solana,
+      provider: IdentityProvider.GitHub,
       providerId: '',
       ownerId: '',
     },

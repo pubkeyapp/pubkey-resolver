@@ -85,13 +85,9 @@ export type AccountUserFindManyInput = {
 
 export type AppConfig = {
   __typename?: 'AppConfig'
-  authDiscordEnabled: Scalars['Boolean']['output']
   authGithubEnabled: Scalars['Boolean']['output']
-  authGoogleEnabled: Scalars['Boolean']['output']
   authPasswordEnabled: Scalars['Boolean']['output']
   authRegisterEnabled: Scalars['Boolean']['output']
-  authSolanaEnabled: Scalars['Boolean']['output']
-  authTwitterEnabled: Scalars['Boolean']['output']
 }
 
 export type Identity = {
@@ -136,33 +132,11 @@ export type IdentityChallenge = {
 }
 
 export enum IdentityProvider {
-  Discord = 'Discord',
   GitHub = 'GitHub',
-  Google = 'Google',
-  Solana = 'Solana',
-  Twitter = 'Twitter',
-}
-
-export type IdentityRequestChallengeInput = {
-  provider: IdentityProvider
-  providerId: Scalars['String']['input']
 }
 
 export type IdentityUserFindManyInput = {
   username: Scalars['String']['input']
-}
-
-export type IdentityUserLinkInput = {
-  provider: IdentityProvider
-  providerId: Scalars['String']['input']
-}
-
-export type IdentityVerifyChallengeInput = {
-  challenge: Scalars['String']['input']
-  provider: IdentityProvider
-  providerId: Scalars['String']['input']
-  signature: Scalars['String']['input']
-  useLedger?: InputMaybe<Scalars['Boolean']['input']>
 }
 
 export type LoginInput = {
@@ -180,14 +154,11 @@ export type Mutation = {
   adminDeleteUser?: Maybe<Scalars['Boolean']['output']>
   adminUpdateAccount?: Maybe<Account>
   adminUpdateUser?: Maybe<User>
-  anonVerifyIdentityChallenge?: Maybe<IdentityChallenge>
   login?: Maybe<User>
   logout?: Maybe<Scalars['Boolean']['output']>
   register?: Maybe<User>
   userDeleteIdentity?: Maybe<Scalars['Boolean']['output']>
-  userLinkIdentity?: Maybe<Identity>
   userUpdateUser?: Maybe<User>
-  userVerifyIdentityChallenge?: Maybe<IdentityChallenge>
 }
 
 export type MutationAdminCreateAccountArgs = {
@@ -224,10 +195,6 @@ export type MutationAdminUpdateUserArgs = {
   userId: Scalars['String']['input']
 }
 
-export type MutationAnonVerifyIdentityChallengeArgs = {
-  input: IdentityVerifyChallengeInput
-}
-
 export type MutationLoginArgs = {
   input: LoginInput
 }
@@ -240,16 +207,8 @@ export type MutationUserDeleteIdentityArgs = {
   identityId: Scalars['String']['input']
 }
 
-export type MutationUserLinkIdentityArgs = {
-  input: IdentityUserLinkInput
-}
-
 export type MutationUserUpdateUserArgs = {
   input: UserUserUpdateInput
-}
-
-export type MutationUserVerifyIdentityChallengeArgs = {
-  input: IdentityVerifyChallengeInput
 }
 
 export enum NetworkCluster {
@@ -280,7 +239,6 @@ export type Query = {
   adminGetAccountInfo?: Maybe<Scalars['JSON']['output']>
   adminResolveAccount?: Maybe<Scalars['JSON']['output']>
   adminResolveWallet?: Maybe<Scalars['JSON']['output']>
-  anonRequestIdentityChallenge?: Maybe<IdentityChallenge>
   appConfig: AppConfig
   me?: Maybe<User>
   uptime: Scalars['Float']['output']
@@ -289,7 +247,6 @@ export type Query = {
   userFindManyUser: UserPaging
   userFindOneAccount?: Maybe<Account>
   userFindOneUser?: Maybe<User>
-  userRequestIdentityChallenge?: Maybe<IdentityChallenge>
 }
 
 export type QueryAdminFindManyAccountArgs = {
@@ -324,10 +281,6 @@ export type QueryAdminResolveWalletArgs = {
   input: AccountAdminResolveInput
 }
 
-export type QueryAnonRequestIdentityChallengeArgs = {
-  input: IdentityRequestChallengeInput
-}
-
 export type QueryUserFindManyAccountArgs = {
   input: AccountUserFindManyInput
 }
@@ -346,10 +299,6 @@ export type QueryUserFindOneAccountArgs = {
 
 export type QueryUserFindOneUserArgs = {
   username: Scalars['String']['input']
-}
-
-export type QueryUserRequestIdentityChallengeArgs = {
-  input: IdentityRequestChallengeInput
 }
 
 export type RegisterInput = {
@@ -681,13 +630,9 @@ export type MeQuery = {
 
 export type AppConfigDetailsFragment = {
   __typename?: 'AppConfig'
-  authDiscordEnabled: boolean
   authGithubEnabled: boolean
-  authGoogleEnabled: boolean
   authPasswordEnabled: boolean
   authRegisterEnabled: boolean
-  authSolanaEnabled: boolean
-  authTwitterEnabled: boolean
 }
 
 export type PagingMetaDetailsFragment = {
@@ -711,13 +656,9 @@ export type AppConfigQuery = {
   __typename?: 'Query'
   config: {
     __typename?: 'AppConfig'
-    authDiscordEnabled: boolean
     authGithubEnabled: boolean
-    authGoogleEnabled: boolean
     authPasswordEnabled: boolean
     authRegisterEnabled: boolean
-    authSolanaEnabled: boolean
-    authTwitterEnabled: boolean
   }
 }
 
@@ -849,111 +790,6 @@ export type UserDeleteIdentityMutationVariables = Exact<{
 }>
 
 export type UserDeleteIdentityMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
-
-export type UserRequestIdentityChallengeQueryVariables = Exact<{
-  input: IdentityRequestChallengeInput
-}>
-
-export type UserRequestIdentityChallengeQuery = {
-  __typename?: 'Query'
-  challenge?: {
-    __typename?: 'IdentityChallenge'
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    provider: IdentityProvider
-    providerId: string
-    challenge: string
-    signature?: string | null
-    ip: string
-    userAgent: string
-    verified: boolean
-  } | null
-}
-
-export type UserVerifyIdentityChallengeMutationVariables = Exact<{
-  input: IdentityVerifyChallengeInput
-}>
-
-export type UserVerifyIdentityChallengeMutation = {
-  __typename?: 'Mutation'
-  verified?: {
-    __typename?: 'IdentityChallenge'
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    provider: IdentityProvider
-    providerId: string
-    challenge: string
-    signature?: string | null
-    ip: string
-    userAgent: string
-    verified: boolean
-  } | null
-}
-
-export type UserLinkIdentityMutationVariables = Exact<{
-  input: IdentityUserLinkInput
-}>
-
-export type UserLinkIdentityMutation = {
-  __typename?: 'Mutation'
-  linked?: {
-    __typename?: 'Identity'
-    createdAt: Date
-    expired?: boolean | null
-    id: string
-    name?: string | null
-    profile?: any | null
-    provider: IdentityProvider
-    providerId: string
-    updatedAt: Date
-    url?: string | null
-    verified?: boolean | null
-  } | null
-}
-
-export type AnonRequestIdentityChallengeQueryVariables = Exact<{
-  input: IdentityRequestChallengeInput
-}>
-
-export type AnonRequestIdentityChallengeQuery = {
-  __typename?: 'Query'
-  challenge?: {
-    __typename?: 'IdentityChallenge'
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    provider: IdentityProvider
-    providerId: string
-    challenge: string
-    signature?: string | null
-    ip: string
-    userAgent: string
-    verified: boolean
-  } | null
-}
-
-export type AnonVerifyIdentityChallengeMutationVariables = Exact<{
-  input: IdentityVerifyChallengeInput
-}>
-
-export type AnonVerifyIdentityChallengeMutation = {
-  __typename?: 'Mutation'
-  verified?: {
-    __typename?: 'IdentityChallenge'
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    provider: IdentityProvider
-    providerId: string
-    challenge: string
-    signature?: string | null
-    ip: string
-    userAgent: string
-    verified: boolean
-  } | null
-}
 
 export type UserDetailsFragment = {
   __typename?: 'User'
@@ -1178,13 +1014,9 @@ export const AccountDetailsFragmentDoc = gql`
 `
 export const AppConfigDetailsFragmentDoc = gql`
   fragment AppConfigDetails on AppConfig {
-    authDiscordEnabled
     authGithubEnabled
-    authGoogleEnabled
     authPasswordEnabled
     authRegisterEnabled
-    authSolanaEnabled
-    authTwitterEnabled
   }
 `
 export const PagingMetaDetailsFragmentDoc = gql`
@@ -1404,46 +1236,6 @@ export const UserDeleteIdentityDocument = gql`
     deleted: userDeleteIdentity(identityId: $identityId)
   }
 `
-export const UserRequestIdentityChallengeDocument = gql`
-  query userRequestIdentityChallenge($input: IdentityRequestChallengeInput!) {
-    challenge: userRequestIdentityChallenge(input: $input) {
-      ...IdentityChallengeDetails
-    }
-  }
-  ${IdentityChallengeDetailsFragmentDoc}
-`
-export const UserVerifyIdentityChallengeDocument = gql`
-  mutation userVerifyIdentityChallenge($input: IdentityVerifyChallengeInput!) {
-    verified: userVerifyIdentityChallenge(input: $input) {
-      ...IdentityChallengeDetails
-    }
-  }
-  ${IdentityChallengeDetailsFragmentDoc}
-`
-export const UserLinkIdentityDocument = gql`
-  mutation userLinkIdentity($input: IdentityUserLinkInput!) {
-    linked: userLinkIdentity(input: $input) {
-      ...IdentityDetails
-    }
-  }
-  ${IdentityDetailsFragmentDoc}
-`
-export const AnonRequestIdentityChallengeDocument = gql`
-  query anonRequestIdentityChallenge($input: IdentityRequestChallengeInput!) {
-    challenge: anonRequestIdentityChallenge(input: $input) {
-      ...IdentityChallengeDetails
-    }
-  }
-  ${IdentityChallengeDetailsFragmentDoc}
-`
-export const AnonVerifyIdentityChallengeDocument = gql`
-  mutation anonVerifyIdentityChallenge($input: IdentityVerifyChallengeInput!) {
-    verified: anonVerifyIdentityChallenge(input: $input) {
-      ...IdentityChallengeDetails
-    }
-  }
-  ${IdentityChallengeDetailsFragmentDoc}
-`
 export const AdminCreateUserDocument = gql`
   mutation adminCreateUser($input: UserAdminCreateInput!) {
     created: adminCreateUser(input: $input) {
@@ -1551,11 +1343,6 @@ const AdminCreateIdentityDocumentString = print(AdminCreateIdentityDocument)
 const AdminDeleteIdentityDocumentString = print(AdminDeleteIdentityDocument)
 const UserFindManyIdentityDocumentString = print(UserFindManyIdentityDocument)
 const UserDeleteIdentityDocumentString = print(UserDeleteIdentityDocument)
-const UserRequestIdentityChallengeDocumentString = print(UserRequestIdentityChallengeDocument)
-const UserVerifyIdentityChallengeDocumentString = print(UserVerifyIdentityChallengeDocument)
-const UserLinkIdentityDocumentString = print(UserLinkIdentityDocument)
-const AnonRequestIdentityChallengeDocumentString = print(AnonRequestIdentityChallengeDocument)
-const AnonVerifyIdentityChallengeDocumentString = print(AnonVerifyIdentityChallengeDocument)
 const AdminCreateUserDocumentString = print(AdminCreateUserDocument)
 const AdminDeleteUserDocumentString = print(AdminDeleteUserDocument)
 const AdminFindManyUserDocumentString = print(AdminFindManyUserDocument)
@@ -1974,111 +1761,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         variables,
       )
     },
-    userRequestIdentityChallenge(
-      variables: UserRequestIdentityChallengeQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<{
-      data: UserRequestIdentityChallengeQuery
-      errors?: GraphQLError[]
-      extensions?: any
-      headers: Headers
-      status: number
-    }> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.rawRequest<UserRequestIdentityChallengeQuery>(UserRequestIdentityChallengeDocumentString, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'userRequestIdentityChallenge',
-        'query',
-        variables,
-      )
-    },
-    userVerifyIdentityChallenge(
-      variables: UserVerifyIdentityChallengeMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<{
-      data: UserVerifyIdentityChallengeMutation
-      errors?: GraphQLError[]
-      extensions?: any
-      headers: Headers
-      status: number
-    }> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.rawRequest<UserVerifyIdentityChallengeMutation>(UserVerifyIdentityChallengeDocumentString, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'userVerifyIdentityChallenge',
-        'mutation',
-        variables,
-      )
-    },
-    userLinkIdentity(
-      variables: UserLinkIdentityMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<{
-      data: UserLinkIdentityMutation
-      errors?: GraphQLError[]
-      extensions?: any
-      headers: Headers
-      status: number
-    }> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.rawRequest<UserLinkIdentityMutation>(UserLinkIdentityDocumentString, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'userLinkIdentity',
-        'mutation',
-        variables,
-      )
-    },
-    anonRequestIdentityChallenge(
-      variables: AnonRequestIdentityChallengeQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<{
-      data: AnonRequestIdentityChallengeQuery
-      errors?: GraphQLError[]
-      extensions?: any
-      headers: Headers
-      status: number
-    }> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.rawRequest<AnonRequestIdentityChallengeQuery>(AnonRequestIdentityChallengeDocumentString, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'anonRequestIdentityChallenge',
-        'query',
-        variables,
-      )
-    },
-    anonVerifyIdentityChallenge(
-      variables: AnonVerifyIdentityChallengeMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<{
-      data: AnonVerifyIdentityChallengeMutation
-      errors?: GraphQLError[]
-      extensions?: any
-      headers: Headers
-      status: number
-    }> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.rawRequest<AnonVerifyIdentityChallengeMutation>(AnonVerifyIdentityChallengeDocumentString, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'anonVerifyIdentityChallenge',
-        'mutation',
-        variables,
-      )
-    },
     adminCreateUser(
       variables: AdminCreateUserMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -2328,33 +2010,9 @@ export function IdentityAdminFindManyInputSchema(): z.ZodObject<Properties<Ident
   })
 }
 
-export function IdentityRequestChallengeInputSchema(): z.ZodObject<Properties<IdentityRequestChallengeInput>> {
-  return z.object({
-    provider: IdentityProviderSchema,
-    providerId: z.string(),
-  })
-}
-
 export function IdentityUserFindManyInputSchema(): z.ZodObject<Properties<IdentityUserFindManyInput>> {
   return z.object({
     username: z.string(),
-  })
-}
-
-export function IdentityUserLinkInputSchema(): z.ZodObject<Properties<IdentityUserLinkInput>> {
-  return z.object({
-    provider: IdentityProviderSchema,
-    providerId: z.string(),
-  })
-}
-
-export function IdentityVerifyChallengeInputSchema(): z.ZodObject<Properties<IdentityVerifyChallengeInput>> {
-  return z.object({
-    challenge: z.string(),
-    provider: IdentityProviderSchema,
-    providerId: z.string(),
-    signature: z.string(),
-    useLedger: z.boolean().default(false).nullish(),
   })
 }
 

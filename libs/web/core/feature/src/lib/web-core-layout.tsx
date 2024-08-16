@@ -2,13 +2,7 @@ import { Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useAuth } from '@pubkey-resolver/web-auth-data-access'
 import { UiHeaderProfile } from '@pubkey-resolver/web-core-ui'
-import {
-  SolanaUiAccountBalanceButton,
-  SolanaUiAccountChecker,
-  SolanaUiClusterChecker,
-  SolanaUiClusterSelect,
-  WalletIcon,
-} from '@pubkey-resolver/web-solana-ui'
+
 import { UiHeader, UiLayout, UiLoader } from '@pubkey-ui/core'
 import { ReactNode, Suspense } from 'react'
 
@@ -23,22 +17,16 @@ export function WebCoreLayout({ children }: { children: ReactNode }) {
           toggle={toggle}
           links={[
             { link: '/dashboard', label: 'Dashboard' },
-            { link: '/solana', label: 'Solana' },
+            { link: '/accounts', label: 'Accounts' },
           ]}
           profile={
             <Group gap="xs">
-              <SolanaUiAccountBalanceButton />
-              <SolanaUiClusterSelect />
-              <WalletIcon />
               <UiHeaderProfile user={user} logout={logout} />
             </Group>
           }
         />
       }
     >
-      <SolanaUiClusterChecker>
-        <SolanaUiAccountChecker />
-      </SolanaUiClusterChecker>
       <Suspense fallback={<UiLoader mt="xl" size="xl" type="dots" />}>{children}</Suspense>
     </UiLayout>
   )

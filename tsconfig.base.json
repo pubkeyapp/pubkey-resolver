@@ -15,7 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pubkey-resolver/anchor": ["libs/anchor/src/index.ts"],
       "@pubkey-resolver/api-account-data-access": ["libs/api/account/data-access/src/index.ts"],
       "@pubkey-resolver/api-account-feature": ["libs/api/account/feature/src/index.ts"],
       "@pubkey-resolver/api-auth-data-access": ["libs/api/auth/data-access/src/index.ts"],
@@ -46,8 +45,6 @@
       "@pubkey-resolver/web-identity-ui": ["libs/web/identity/ui/src/index.ts"],
       "@pubkey-resolver/web-settings-feature": ["libs/web/settings/feature/src/index.ts"],
       "@pubkey-resolver/web-solana-data-access": ["libs/web/solana/data-access/src/index.ts"],
-      "@pubkey-resolver/web-solana-feature": ["libs/web/solana/feature/src/index.ts"],
-      "@pubkey-resolver/web-solana-ui": ["libs/web/solana/ui/src/index.ts"],
       "@pubkey-resolver/web-user-data-access": ["libs/web/user/data-access/src/index.ts"],
       "@pubkey-resolver/web-user-feature": ["libs/web/user/feature/src/index.ts"],
       "@pubkey-resolver/web-user-ui": ["libs/web/user/ui/src/index.ts"]

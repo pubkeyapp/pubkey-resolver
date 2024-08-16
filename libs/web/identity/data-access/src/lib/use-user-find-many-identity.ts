@@ -25,26 +25,15 @@ export function useUserFindManyIdentity({ username }: { username: string }) {
         }
         return acc
       },
-      [
-        { provider: IdentityProvider.Discord, items: [] },
-        { provider: IdentityProvider.GitHub, items: [] },
-        { provider: IdentityProvider.Google, items: [] },
-        { provider: IdentityProvider.Solana, items: [] },
-        { provider: IdentityProvider.Twitter, items: [] },
-      ] as { provider: IdentityProvider; items: Identity[] }[],
+      [{ provider: IdentityProvider.GitHub, items: [] }] as { provider: IdentityProvider; items: Identity[] }[],
     )
   }, [query.data])
 
   const items = query.data?.items ?? []
 
-  const discordIdentity = items.find((x) => x.provider === IdentityProvider.Discord)
-
   return {
-    expiredDiscord: discordIdentity?.expired ?? false,
     grouped,
-    hasDiscord: !!discordIdentity,
     hasGithub: items.some((x) => x.provider === IdentityProvider.GitHub),
-    hasSolana: items.some((x) => x.provider === IdentityProvider.Solana),
     items,
     query,
     deleteIdentity(identityId: string) {

@@ -76,11 +76,7 @@ enum AccountType {
 }
 
 enum IdentityProvider {
-  Discord
   GitHub
-  Google
-  Solana
-  Twitter
 }
 
 enum NetworkCluster {

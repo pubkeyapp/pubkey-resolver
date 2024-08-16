@@ -3,7 +3,7 @@ import '@pubkey-ui/core/index.esm.css'
 import 'mantine-datatable/styles.layer.css'
 import { AuthProvider } from '@pubkey-resolver/web-auth-data-access'
 import { AppConfigProvider } from '@pubkey-resolver/web-core-data-access'
-import { SolanaClusterProvider } from '@pubkey-resolver/web-solana-data-access'
+
 import { toastError, UiTheme, UiThemeProvider } from '@pubkey-ui/core'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactNode } from 'react'
@@ -24,9 +24,7 @@ export function WebCoreProviders({ children, theme }: { children: ReactNode; the
     <UiThemeProvider link={({ children, ...props }) => <Link {...props}>{children}</Link>} theme={theme}>
       <QueryClientProvider client={client}>
         <AppConfigProvider>
-          <AuthProvider>
-            <SolanaClusterProvider>{children}</SolanaClusterProvider>
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </AppConfigProvider>
       </QueryClientProvider>
     </UiThemeProvider>

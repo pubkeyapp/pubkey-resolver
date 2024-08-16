@@ -1,24 +1,12 @@
-import { Avatar, getGradient, Tooltip } from '@mantine/core'
-import { ellipsify, Identity, IdentityProvider, solanaGradient } from '@pubkey-resolver/sdk'
-import { IconCurrencySolana } from '@tabler/icons-react'
+import { Avatar, Tooltip } from '@mantine/core'
+import { ellipsify, Identity } from '@pubkey-resolver/sdk'
 
 export function IdentityUiAvatar({ item, withTooltip = false }: { item: Identity; withTooltip?: boolean }) {
-  const content =
-    item.provider === IdentityProvider.Solana ? (
-      <Avatar
-        radius={100}
-        styles={(theme) => ({
-          root: { background: getGradient(solanaGradient, theme) },
-          placeholder: { background: 'transparent', color: 'white' },
-        })}
-      >
-        <IconCurrencySolana size={28} />
-      </Avatar>
-    ) : item.profile?.avatarUrl ? (
-      <Avatar radius={100} src={item.profile?.avatarUrl} alt={`${item.provider} avatar`} />
-    ) : (
-      <Avatar radius={100}>{item.profile?.username.substring(0, 1)}</Avatar>
-    )
+  const content = item.profile?.avatarUrl ? (
+    <Avatar radius={100} src={item.profile?.avatarUrl} alt={`${item.provider} avatar`} />
+  ) : (
+    <Avatar radius={100}>{item.profile?.username.substring(0, 1)}</Avatar>
+  )
 
   return withTooltip ? (
     <Tooltip label={`${item.profile?.username ?? ellipsify(item.providerId)} on ${item.provider}`} withArrow>

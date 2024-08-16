@@ -60,13 +60,9 @@ input AccountUserFindManyInput {
 }
 
 type AppConfig {
-  authDiscordEnabled: Boolean!
   authGithubEnabled: Boolean!
-  authGoogleEnabled: Boolean!
   authPasswordEnabled: Boolean!
   authRegisterEnabled: Boolean!
-  authSolanaEnabled: Boolean!
-  authTwitterEnabled: Boolean!
 }
 
 """
@@ -114,33 +110,11 @@ type IdentityChallenge {
 }
 
 enum IdentityProvider {
-  Discord
   GitHub
-  Google
-  Solana
-  Twitter
-}
-
-input IdentityRequestChallengeInput {
-  provider: IdentityProvider!
-  providerId: String!
 }
 
 input IdentityUserFindManyInput {
   username: String!
-}
-
-input IdentityUserLinkInput {
-  provider: IdentityProvider!
-  providerId: String!
-}
-
-input IdentityVerifyChallengeInput {
-  challenge: String!
-  provider: IdentityProvider!
-  providerId: String!
-  signature: String!
-  useLedger: Boolean = false
 }
 
 """
@@ -162,14 +136,11 @@ type Mutation {
   adminDeleteUser(userId: String!): Boolean
   adminUpdateAccount(accountId: String!, input: AccountAdminUpdateInput!): Account
   adminUpdateUser(input: UserAdminUpdateInput!, userId: String!): User
-  anonVerifyIdentityChallenge(input: IdentityVerifyChallengeInput!): IdentityChallenge
   login(input: LoginInput!): User
   logout: Boolean
   register(input: RegisterInput!): User
   userDeleteIdentity(identityId: String!): Boolean
-  userLinkIdentity(input: IdentityUserLinkInput!): Identity
   userUpdateUser(input: UserUserUpdateInput!): User
-  userVerifyIdentityChallenge(input: IdentityVerifyChallengeInput!): IdentityChallenge
 }
 
 enum NetworkCluster {
@@ -198,7 +169,6 @@ type Query {
   adminGetAccountInfo(input: AccountAdminResolveInput!): JSON
   adminResolveAccount(input: AccountAdminResolveInput!): JSON
   adminResolveWallet(input: AccountAdminResolveInput!): JSON
-  anonRequestIdentityChallenge(input: IdentityRequestChallengeInput!): IdentityChallenge
   appConfig: AppConfig!
   me: User
   uptime: Float!
@@ -207,7 +177,6 @@ type Query {
   userFindManyUser(input: UserUserFindManyInput!): UserPaging!
   userFindOneAccount(accountId: String!): Account
   userFindOneUser(username: String!): User
-  userRequestIdentityChallenge(input: IdentityRequestChallengeInput!): IdentityChallenge
 }
 
 input RegisterInput {

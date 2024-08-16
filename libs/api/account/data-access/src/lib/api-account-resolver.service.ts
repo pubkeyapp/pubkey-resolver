@@ -11,14 +11,7 @@ import { ensureValidSolanaAddress } from './helpers/ensure-valid-solana-address'
 export class ApiAccountResolverService {
   private readonly logger = new Logger(ApiAccountResolverService.name)
 
-  constructor(private readonly core: ApiCoreService) {
-    this.core.network
-      .ensureConnection(NetworkCluster.SolanaMainnet)
-      .getGenesisHash()
-      .then((res) => {
-        console.log(res)
-      })
-  }
+  constructor(private readonly core: ApiCoreService) {}
 
   async resolveAccount({ address, cluster }: AccountResolveInput) {
     ensureValidSolanaAddress(address)

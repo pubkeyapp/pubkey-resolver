@@ -1,11 +1,9 @@
-import { ActionIcon, Badge, Code, Group, Menu, Text } from '@mantine/core'
+import { ActionIcon, Code, Group, Menu, Text } from '@mantine/core'
 import { ellipsify, Identity } from '@pubkey-resolver/sdk'
 import { UiCard, UiDebugModal, UiGroup, UiStack } from '@pubkey-ui/core'
 import { IconDotsVertical, IconTrash } from '@tabler/icons-react'
 import { IdentityUiAvatar } from './identity-ui-avatar'
 import { IdentityUiLink } from './identity-ui-link'
-import { IdentityUiSolanaVerifyButton } from './identity-ui-solana-verify-button'
-import { IdentityUiVerified } from './identity-ui-verified'
 
 export function IdentityUiList({
   deleteIdentity,
@@ -30,15 +28,6 @@ export function IdentityUiList({
                   </Text>
                 ) : (
                   <Code>{ellipsify(item.providerId)}</Code>
-                )}
-                {item.verified ? (
-                  <IdentityUiVerified item={item} />
-                ) : refresh ? (
-                  <IdentityUiSolanaVerifyButton identity={item} refresh={refresh} />
-                ) : (
-                  <Badge variant="light" color="yellow">
-                    Not verified
-                  </Badge>
                 )}
               </UiGroup>
             </Group>
