@@ -4,6 +4,7 @@ fragment IndexEntryDetails on IndexEntry {
   indexAddress
   cluster
   address
+  amount
   label
   data
   dataHash

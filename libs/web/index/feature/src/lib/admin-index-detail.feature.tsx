@@ -71,18 +71,21 @@ export default function AdminIndexDetailFeature() {
 
 function AdminIndexResolveWalletFeature({ item }: { item: Index }) {
   const mutation = useAdminResolveWallet({ address: item.address, cluster: item.cluster })
-  const [wallet, setWallet] = useState<string>(item.address)
+  const [wallet, setWallet] = useState<string | undefined>()
   const [output, setOutput] = useState<unknown | undefined>(undefined)
 
-  function submit(wallet: string) {
+  function submit(wallet: string | undefined) {
+    if (!wallet) {
+      return
+    }
     setOutput(undefined)
     mutation
       .mutateAsync(wallet)
       .then((res) => {
-        setOutput({ res })
+        setOutput({ res: res?.item })
       })
       .catch((err) => {
-        setOutput({ err })
+        setOutput({ err: `${err}` })
       })
   }
 

@@ -1,4 +1,4 @@
-import { IndexType, NetworkCluster } from '@pubkey-resolver/sdk'
+import { IndexType, NetworkCluster } from '@prisma/client'
 import { ApiIndexDataCreateInput } from './api-index-data.service'
 
 export const provisionIndexes: ApiIndexDataCreateInput[] = [

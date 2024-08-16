@@ -85,6 +85,7 @@ input IndexAdminUpdateInput {
 
 type IndexEntry {
   address: String!
+  amount: String!
   cluster: NetworkCluster!
   createdAt: DateTime
   data: JSON

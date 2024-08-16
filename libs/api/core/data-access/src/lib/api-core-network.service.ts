@@ -4,7 +4,7 @@ import { web3JsRpc } from '@metaplex-foundation/umi-rpc-web3js'
 import { Injectable, Logger } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { NetworkCluster } from '@prisma/client'
-import { Connection, PublicKey } from '@solana/web3.js'
+import { AccountInfo, Connection, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { CORE_APP_STARTED } from './api-core.events'
 import { ApiCoreConfigService, NetworkClusterMap } from './config/api-core-config.service'
 
@@ -99,3 +99,5 @@ export class ApiCoreNetworkService {
     return umi
   }
 }
+
+export type SolanaAccountInfo = AccountInfo<ParsedAccountData>

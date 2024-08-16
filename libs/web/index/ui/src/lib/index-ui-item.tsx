@@ -26,6 +26,9 @@ export function IndexUiItem({
           <Text size="lg" fw={500}>
             {index?.label}
           </Text>
+          <Text size="xs" c="dimmed">
+            {index?.cluster?.toString()?.replace('Solana', 'Solana ')}
+          </Text>
         </Stack>
       </Group>
     </UiAnchor>

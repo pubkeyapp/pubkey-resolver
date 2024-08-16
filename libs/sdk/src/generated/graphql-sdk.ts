@@ -106,6 +106,7 @@ export type IndexAdminUpdateInput = {
 export type IndexEntry = {
   __typename?: 'IndexEntry'
   address: Scalars['String']['output']
+  amount: Scalars['String']['output']
   cluster: NetworkCluster
   createdAt?: Maybe<Scalars['DateTime']['output']>
   data?: Maybe<Scalars['JSON']['output']>
@@ -626,6 +627,7 @@ export type IndexEntryDetailsFragment = {
   indexAddress: string
   cluster: NetworkCluster
   address: string
+  amount: string
   label?: string | null
   data?: any | null
   dataHash?: string | null
@@ -649,6 +651,7 @@ export type AdminFindManyIndexEntryQuery = {
       indexAddress: string
       cluster: NetworkCluster
       address: string
+      amount: string
       label?: string | null
       data?: any | null
       dataHash?: string | null
@@ -682,6 +685,7 @@ export type AdminFindOneIndexEntryQuery = {
     indexAddress: string
     cluster: NetworkCluster
     address: string
+    amount: string
     label?: string | null
     data?: any | null
     dataHash?: string | null
@@ -712,6 +716,7 @@ export type UserFindManyIndexEntryQuery = {
       indexAddress: string
       cluster: NetworkCluster
       address: string
+      amount: string
       label?: string | null
       data?: any | null
       dataHash?: string | null
@@ -745,6 +750,7 @@ export type UserFindOneIndexEntryQuery = {
     indexAddress: string
     cluster: NetworkCluster
     address: string
+    amount: string
     label?: string | null
     data?: any | null
     dataHash?: string | null
@@ -1192,6 +1198,7 @@ export const IndexEntryDetailsFragmentDoc = gql`
     indexAddress
     cluster
     address
+    amount
     label
     data
     dataHash

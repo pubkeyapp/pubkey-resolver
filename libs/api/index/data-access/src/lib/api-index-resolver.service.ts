@@ -1,7 +1,8 @@
 import { DasApiAsset } from '@metaplex-foundation/digital-asset-standard-api'
 import { publicKey } from '@metaplex-foundation/umi'
 import { Injectable, Logger } from '@nestjs/common'
-import { ApiCoreService, NetworkCluster } from '@pubkey-resolver/api-core-data-access'
+import { ApiCoreService, NetworkCluster, SolanaAccountInfo } from '@pubkey-resolver/api-core-data-access'
+import { ApiIndexEntryService } from '@pubkey-resolver/api-index-entry-data-access'
 import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { IndexType } from './entity/index-type.enum'
@@ -11,7 +12,7 @@ import { ensureValidSolanaAddress } from './helpers/ensure-valid-solana-address'
 export class ApiIndexResolverService {
   private readonly logger = new Logger(ApiIndexResolverService.name)
 
-  constructor(private readonly core: ApiCoreService) {}
+  constructor(private readonly core: ApiCoreService, private readonly indexEntry: ApiIndexEntryService) {}
 
   async resolveIndex({ address, cluster }: IndexResolveInput) {
     ensureValidSolanaAddress(address)
@@ -54,15 +55,21 @@ export class ApiIndexResolverService {
 
     if (found.type === IndexType.SolanaMint) {
       this.logger.verbose(`Resolving mint ${address} on ${cluster} for wallet ${wallet}`)
-      const tokenIndexes = await this.core.network.getTokenAccountsByMint({
+      const tokenAccounts = await this.core.network.getTokenAccountsByMint({
         cluster,
         wallet,
         programId: found.program,
         mint: found.address,
       })
+      const result = await this.indexEntry.data.storeTokenAccounts({
+        index: found,
+        tokenAccounts,
+      })
+
       return {
         found,
-        tokenIndexes,
+        tokenAccounts,
+        result,
       }
     }
 
@@ -105,8 +112,6 @@ export interface IndexResolveInput {
   cluster: NetworkCluster
   address: string
 }
-
-export type SolanaAccountInfo = AccountInfo<ParsedAccountData>
 
 function getIndexType(index: AccountInfo<ParsedAccountData>): IndexType | undefined {
   if ([TOKEN_2022_PROGRAM_ID.toBase58(), TOKEN_PROGRAM_ID.toBase58()].includes(index.owner.toBase58())) {

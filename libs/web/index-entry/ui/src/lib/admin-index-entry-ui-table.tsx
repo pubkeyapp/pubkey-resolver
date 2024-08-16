@@ -1,5 +1,6 @@
 import { ActionIcon, Anchor, Group, ScrollArea } from '@mantine/core'
 import { IndexEntry } from '@pubkey-resolver/sdk'
+import { UiDebugModal } from '@pubkey-ui/core'
 import { IconPencil, IconTrash } from '@tabler/icons-react'
 import { DataTable, DataTableProps } from 'mantine-datatable'
 import { Link } from 'react-router-dom'
@@ -38,7 +39,15 @@ export function AdminIndexEntryUiTable({
               </Anchor>
             ),
           },
+          { accessor: 'address' },
+          { accessor: 'wallet' },
           {
+            width: '10%',
+            accessor: 'amount',
+            textAlign: 'right',
+          },
+          {
+            width: '10%',
             accessor: 'actions',
             title: 'Actions',
             textAlign: 'right',
@@ -47,6 +56,7 @@ export function AdminIndexEntryUiTable({
                 <ActionIcon color="brand" variant="light" size="sm" component={Link} to={`./${item.id}/settings`}>
                   <IconPencil size={16} />
                 </ActionIcon>
+                <UiDebugModal data={item} />
                 <ActionIcon color="red" variant="light" size="sm" onClick={() => deleteIndexEntry(item)}>
                   <IconTrash size={16} />
                 </ActionIcon>

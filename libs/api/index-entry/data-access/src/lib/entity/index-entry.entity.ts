@@ -18,6 +18,8 @@ export class IndexEntry {
   @Field()
   address!: string
   @Field()
+  amount!: string
+  @Field()
   program!: string
   @Field()
   wallet!: string

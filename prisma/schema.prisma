@@ -48,11 +48,14 @@ model IndexEntry {
   indexAddress String
   cluster      NetworkCluster
   program      String
+  amount       String         @default("0")
   address      String
   wallet       String
   data         Json?
   dataHash     String?
   label        String?
+
+  @@index([cluster, indexAddress, wallet])
 }
 
 model User {
