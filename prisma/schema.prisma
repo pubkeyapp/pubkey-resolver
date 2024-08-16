@@ -35,8 +35,24 @@ model Index {
   data      Json?
   dataHash  String?
   label     String?
+  entries   IndexEntry[]
 
   @@unique([address, cluster])
+}
+
+model IndexEntry {
+  id           String         @id @default(cuid())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  index        Index          @relation(fields: [indexAddress, cluster], references: [address, cluster], onDelete: Cascade, onUpdate: Cascade)
+  indexAddress String
+  cluster      NetworkCluster
+  program      String
+  address      String
+  wallet       String
+  data         Json?
+  dataHash     String?
+  label        String?
 }
 
 model User {

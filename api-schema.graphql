@@ -83,6 +83,41 @@ input IndexAdminUpdateInput {
   label: String
 }
 
+type IndexEntry {
+  address: String!
+  cluster: NetworkCluster!
+  createdAt: DateTime
+  data: JSON
+  dataHash: String
+  id: String!
+  indexAddress: String!
+  label: String
+  program: String!
+  updatedAt: DateTime
+  wallet: String!
+}
+
+input IndexEntryAdminFindManyInput {
+  cluster: NetworkCluster!
+  indexAddress: String!
+  limit: Int = 10
+  page: Int = 1
+  search: String
+}
+
+type IndexEntryPaging {
+  data: [IndexEntry!]!
+  meta: PagingMeta!
+}
+
+input IndexEntryUserFindManyInput {
+  cluster: NetworkCluster!
+  indexAddress: String!
+  limit: Int = 10
+  page: Int = 1
+  search: String
+}
+
 type IndexPaging {
   data: [Index!]!
   meta: PagingMeta!
@@ -117,6 +152,7 @@ type Mutation {
   adminCreateUser(input: UserAdminCreateInput!): User
   adminDeleteIdentity(identityId: String!): Boolean
   adminDeleteIndex(indexId: String!): Boolean
+  adminDeleteIndexEntry(indexEntryId: String!): Boolean
   adminDeleteUser(userId: String!): Boolean
   adminUpdateIndex(indexId: String!, input: IndexAdminUpdateInput!): Index
   adminUpdateUser(input: UserAdminUpdateInput!, userId: String!): User
@@ -147,8 +183,10 @@ type PagingMeta {
 type Query {
   adminFindManyIdentity(input: IdentityAdminFindManyInput!): [Identity!]
   adminFindManyIndex(input: IndexAdminFindManyInput!): IndexPaging!
+  adminFindManyIndexEntry(input: IndexEntryAdminFindManyInput!): IndexEntryPaging!
   adminFindManyUser(input: UserAdminFindManyInput!): UserPaging!
   adminFindOneIndex(indexId: String!): Index
+  adminFindOneIndexEntry(indexEntryId: String!): IndexEntry
   adminFindOneUser(userId: String!): User
   adminGetAccountInfo(input: IndexAdminResolveInput!): JSON
   adminResolveIndex(input: IndexAdminResolveInput!): JSON
@@ -158,8 +196,10 @@ type Query {
   uptime: Float!
   userFindManyIdentity(input: IdentityUserFindManyInput!): [Identity!]
   userFindManyIndex(input: IndexUserFindManyInput!): IndexPaging!
+  userFindManyIndexEntry(input: IndexEntryUserFindManyInput!): IndexEntryPaging!
   userFindManyUser(input: UserUserFindManyInput!): UserPaging!
   userFindOneIndex(indexId: String!): Index
+  userFindOneIndexEntry(indexEntryId: String!): IndexEntry
   userFindOneUser(username: String!): User
 }
 

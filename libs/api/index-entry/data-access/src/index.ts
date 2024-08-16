@@ -1,0 +1,5 @@
+export * from './lib/api-index-entry.data-access.module'
+export * from './lib/api-index-entry.service'
+export * from './lib/entity/index-entry.entity'
+export * from './lib/dto/index-entry-admin-find-many.input'
+export * from './lib/dto/index-entry-user-find-many.input'

@@ -103,6 +103,43 @@ export type IndexAdminUpdateInput = {
   label?: InputMaybe<Scalars['String']['input']>
 }
 
+export type IndexEntry = {
+  __typename?: 'IndexEntry'
+  address: Scalars['String']['output']
+  cluster: NetworkCluster
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  data?: Maybe<Scalars['JSON']['output']>
+  dataHash?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  indexAddress: Scalars['String']['output']
+  label?: Maybe<Scalars['String']['output']>
+  program: Scalars['String']['output']
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  wallet: Scalars['String']['output']
+}
+
+export type IndexEntryAdminFindManyInput = {
+  cluster: NetworkCluster
+  indexAddress: Scalars['String']['input']
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+}
+
+export type IndexEntryPaging = {
+  __typename?: 'IndexEntryPaging'
+  data: Array<IndexEntry>
+  meta: PagingMeta
+}
+
+export type IndexEntryUserFindManyInput = {
+  cluster: NetworkCluster
+  indexAddress: Scalars['String']['input']
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+}
+
 export type IndexPaging = {
   __typename?: 'IndexPaging'
   data: Array<Index>
@@ -134,6 +171,7 @@ export type Mutation = {
   adminCreateUser?: Maybe<User>
   adminDeleteIdentity?: Maybe<Scalars['Boolean']['output']>
   adminDeleteIndex?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteIndexEntry?: Maybe<Scalars['Boolean']['output']>
   adminDeleteUser?: Maybe<Scalars['Boolean']['output']>
   adminUpdateIndex?: Maybe<Index>
   adminUpdateUser?: Maybe<User>
@@ -162,6 +200,10 @@ export type MutationAdminDeleteIdentityArgs = {
 
 export type MutationAdminDeleteIndexArgs = {
   indexId: Scalars['String']['input']
+}
+
+export type MutationAdminDeleteIndexEntryArgs = {
+  indexEntryId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteUserArgs = {
@@ -216,8 +258,10 @@ export type Query = {
   __typename?: 'Query'
   adminFindManyIdentity?: Maybe<Array<Identity>>
   adminFindManyIndex: IndexPaging
+  adminFindManyIndexEntry: IndexEntryPaging
   adminFindManyUser: UserPaging
   adminFindOneIndex?: Maybe<Index>
+  adminFindOneIndexEntry?: Maybe<IndexEntry>
   adminFindOneUser?: Maybe<User>
   adminGetAccountInfo?: Maybe<Scalars['JSON']['output']>
   adminResolveIndex?: Maybe<Scalars['JSON']['output']>
@@ -227,8 +271,10 @@ export type Query = {
   uptime: Scalars['Float']['output']
   userFindManyIdentity?: Maybe<Array<Identity>>
   userFindManyIndex: IndexPaging
+  userFindManyIndexEntry: IndexEntryPaging
   userFindManyUser: UserPaging
   userFindOneIndex?: Maybe<Index>
+  userFindOneIndexEntry?: Maybe<IndexEntry>
   userFindOneUser?: Maybe<User>
 }
 
@@ -240,12 +286,20 @@ export type QueryAdminFindManyIndexArgs = {
   input: IndexAdminFindManyInput
 }
 
+export type QueryAdminFindManyIndexEntryArgs = {
+  input: IndexEntryAdminFindManyInput
+}
+
 export type QueryAdminFindManyUserArgs = {
   input: UserAdminFindManyInput
 }
 
 export type QueryAdminFindOneIndexArgs = {
   indexId: Scalars['String']['input']
+}
+
+export type QueryAdminFindOneIndexEntryArgs = {
+  indexEntryId: Scalars['String']['input']
 }
 
 export type QueryAdminFindOneUserArgs = {
@@ -273,12 +327,20 @@ export type QueryUserFindManyIndexArgs = {
   input: IndexUserFindManyInput
 }
 
+export type QueryUserFindManyIndexEntryArgs = {
+  input: IndexEntryUserFindManyInput
+}
+
 export type QueryUserFindManyUserArgs = {
   input: UserUserFindManyInput
 }
 
 export type QueryUserFindOneIndexArgs = {
   indexId: Scalars['String']['input']
+}
+
+export type QueryUserFindOneIndexEntryArgs = {
+  indexEntryId: Scalars['String']['input']
 }
 
 export type QueryUserFindOneUserArgs = {
@@ -556,6 +618,141 @@ export type UserDeleteIdentityMutationVariables = Exact<{
 }>
 
 export type UserDeleteIdentityMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
+export type IndexEntryDetailsFragment = {
+  __typename?: 'IndexEntry'
+  createdAt?: Date | null
+  id: string
+  indexAddress: string
+  cluster: NetworkCluster
+  address: string
+  label?: string | null
+  data?: any | null
+  dataHash?: string | null
+  program: string
+  wallet: string
+  updatedAt?: Date | null
+}
+
+export type AdminFindManyIndexEntryQueryVariables = Exact<{
+  input: IndexEntryAdminFindManyInput
+}>
+
+export type AdminFindManyIndexEntryQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'IndexEntryPaging'
+    data: Array<{
+      __typename?: 'IndexEntry'
+      createdAt?: Date | null
+      id: string
+      indexAddress: string
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      wallet: string
+      updatedAt?: Date | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type AdminFindOneIndexEntryQueryVariables = Exact<{
+  indexEntryId: Scalars['String']['input']
+}>
+
+export type AdminFindOneIndexEntryQuery = {
+  __typename?: 'Query'
+  item?: {
+    __typename?: 'IndexEntry'
+    createdAt?: Date | null
+    id: string
+    indexAddress: string
+    cluster: NetworkCluster
+    address: string
+    label?: string | null
+    data?: any | null
+    dataHash?: string | null
+    program: string
+    wallet: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type AdminDeleteIndexEntryMutationVariables = Exact<{
+  indexEntryId: Scalars['String']['input']
+}>
+
+export type AdminDeleteIndexEntryMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
+export type UserFindManyIndexEntryQueryVariables = Exact<{
+  input: IndexEntryUserFindManyInput
+}>
+
+export type UserFindManyIndexEntryQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'IndexEntryPaging'
+    data: Array<{
+      __typename?: 'IndexEntry'
+      createdAt?: Date | null
+      id: string
+      indexAddress: string
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      wallet: string
+      updatedAt?: Date | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type UserFindOneIndexEntryQueryVariables = Exact<{
+  indexEntryId: Scalars['String']['input']
+}>
+
+export type UserFindOneIndexEntryQuery = {
+  __typename?: 'Query'
+  item?: {
+    __typename?: 'IndexEntry'
+    createdAt?: Date | null
+    id: string
+    indexAddress: string
+    cluster: NetworkCluster
+    address: string
+    label?: string | null
+    data?: any | null
+    dataHash?: string | null
+    program: string
+    wallet: string
+    updatedAt?: Date | null
+  } | null
+}
 
 export type IndexDetailsFragment = {
   __typename?: 'Index'
@@ -988,6 +1185,21 @@ export const IdentityDetailsFragmentDoc = gql`
     verified
   }
 `
+export const IndexEntryDetailsFragmentDoc = gql`
+  fragment IndexEntryDetails on IndexEntry {
+    createdAt
+    id
+    indexAddress
+    cluster
+    address
+    label
+    data
+    dataHash
+    program
+    wallet
+    updatedAt
+  }
+`
 export const IndexDetailsFragmentDoc = gql`
   fragment IndexDetails on Index {
     createdAt
@@ -1095,6 +1307,55 @@ export const UserDeleteIdentityDocument = gql`
   mutation userDeleteIdentity($identityId: String!) {
     deleted: userDeleteIdentity(identityId: $identityId)
   }
+`
+export const AdminFindManyIndexEntryDocument = gql`
+  query adminFindManyIndexEntry($input: IndexEntryAdminFindManyInput!) {
+    paging: adminFindManyIndexEntry(input: $input) {
+      data {
+        ...IndexEntryDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${IndexEntryDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const AdminFindOneIndexEntryDocument = gql`
+  query adminFindOneIndexEntry($indexEntryId: String!) {
+    item: adminFindOneIndexEntry(indexEntryId: $indexEntryId) {
+      ...IndexEntryDetails
+    }
+  }
+  ${IndexEntryDetailsFragmentDoc}
+`
+export const AdminDeleteIndexEntryDocument = gql`
+  mutation adminDeleteIndexEntry($indexEntryId: String!) {
+    deleted: adminDeleteIndexEntry(indexEntryId: $indexEntryId)
+  }
+`
+export const UserFindManyIndexEntryDocument = gql`
+  query userFindManyIndexEntry($input: IndexEntryUserFindManyInput!) {
+    paging: userFindManyIndexEntry(input: $input) {
+      data {
+        ...IndexEntryDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${IndexEntryDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const UserFindOneIndexEntryDocument = gql`
+  query userFindOneIndexEntry($indexEntryId: String!) {
+    item: userFindOneIndexEntry(indexEntryId: $indexEntryId) {
+      ...IndexEntryDetails
+    }
+  }
+  ${IndexEntryDetailsFragmentDoc}
 `
 export const AdminFindManyIndexDocument = gql`
   query adminFindManyIndex($input: IndexAdminFindManyInput!) {
@@ -1273,6 +1534,11 @@ const AdminCreateIdentityDocumentString = print(AdminCreateIdentityDocument)
 const AdminDeleteIdentityDocumentString = print(AdminDeleteIdentityDocument)
 const UserFindManyIdentityDocumentString = print(UserFindManyIdentityDocument)
 const UserDeleteIdentityDocumentString = print(UserDeleteIdentityDocument)
+const AdminFindManyIndexEntryDocumentString = print(AdminFindManyIndexEntryDocument)
+const AdminFindOneIndexEntryDocumentString = print(AdminFindOneIndexEntryDocument)
+const AdminDeleteIndexEntryDocumentString = print(AdminDeleteIndexEntryDocument)
+const UserFindManyIndexEntryDocumentString = print(UserFindManyIndexEntryDocument)
+const UserFindOneIndexEntryDocumentString = print(UserFindOneIndexEntryDocument)
 const AdminFindManyIndexDocumentString = print(AdminFindManyIndexDocument)
 const AdminFindOneIndexDocumentString = print(AdminFindOneIndexDocument)
 const AdminGetAccountInfoDocumentString = print(AdminGetAccountInfoDocument)
@@ -1488,6 +1754,111 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
           }),
         'userDeleteIdentity',
         'mutation',
+        variables,
+      )
+    },
+    adminFindManyIndexEntry(
+      variables: AdminFindManyIndexEntryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyIndexEntryQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindManyIndexEntryQuery>(AdminFindManyIndexEntryDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindManyIndexEntry',
+        'query',
+        variables,
+      )
+    },
+    adminFindOneIndexEntry(
+      variables: AdminFindOneIndexEntryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneIndexEntryQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindOneIndexEntryQuery>(AdminFindOneIndexEntryDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindOneIndexEntry',
+        'query',
+        variables,
+      )
+    },
+    adminDeleteIndexEntry(
+      variables: AdminDeleteIndexEntryMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteIndexEntryMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminDeleteIndexEntryMutation>(AdminDeleteIndexEntryDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminDeleteIndexEntry',
+        'mutation',
+        variables,
+      )
+    },
+    userFindManyIndexEntry(
+      variables: UserFindManyIndexEntryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyIndexEntryQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindManyIndexEntryQuery>(UserFindManyIndexEntryDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindManyIndexEntry',
+        'query',
+        variables,
+      )
+    },
+    userFindOneIndexEntry(
+      variables: UserFindOneIndexEntryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindOneIndexEntryQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindOneIndexEntryQuery>(UserFindOneIndexEntryDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindOneIndexEntry',
+        'query',
         variables,
       )
     },
@@ -1943,6 +2314,26 @@ export function IndexAdminResolveInputSchema(): z.ZodObject<Properties<IndexAdmi
 export function IndexAdminUpdateInputSchema(): z.ZodObject<Properties<IndexAdminUpdateInput>> {
   return z.object({
     label: z.string().nullish(),
+  })
+}
+
+export function IndexEntryAdminFindManyInputSchema(): z.ZodObject<Properties<IndexEntryAdminFindManyInput>> {
+  return z.object({
+    cluster: NetworkClusterSchema,
+    indexAddress: z.string(),
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
+  })
+}
+
+export function IndexEntryUserFindManyInputSchema(): z.ZodObject<Properties<IndexEntryUserFindManyInput>> {
+  return z.object({
+    cluster: NetworkClusterSchema,
+    indexAddress: z.string(),
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
   })
 }
 

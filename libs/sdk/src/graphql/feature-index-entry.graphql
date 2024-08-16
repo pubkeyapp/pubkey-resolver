@@ -1,0 +1,51 @@
+fragment IndexEntryDetails on IndexEntry {
+  createdAt
+  id
+  indexAddress
+  cluster
+  address
+  label
+  data
+  dataHash
+  program
+  wallet
+  updatedAt
+}
+
+query adminFindManyIndexEntry($input: IndexEntryAdminFindManyInput!) {
+  paging: adminFindManyIndexEntry(input: $input) {
+    data {
+      ...IndexEntryDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query adminFindOneIndexEntry($indexEntryId: String!) {
+  item: adminFindOneIndexEntry(indexEntryId: $indexEntryId) {
+    ...IndexEntryDetails
+  }
+}
+
+mutation adminDeleteIndexEntry($indexEntryId: String!) {
+  deleted: adminDeleteIndexEntry(indexEntryId: $indexEntryId)
+}
+
+query userFindManyIndexEntry($input: IndexEntryUserFindManyInput!) {
+  paging: userFindManyIndexEntry(input: $input) {
+    data {
+      ...IndexEntryDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query userFindOneIndexEntry($indexEntryId: String!) {
+  item: userFindOneIndexEntry(indexEntryId: $indexEntryId) {
+    ...IndexEntryDetails
+  }
+}

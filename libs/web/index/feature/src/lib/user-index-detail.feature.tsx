@@ -1,5 +1,6 @@
 import { Group } from '@mantine/core'
 import { useUserFindOneIndex } from '@pubkey-resolver/web-index-data-access'
+import { UserIndexEntryFeature } from '@pubkey-resolver/web-index-entry-feature'
 import { IndexUiItem } from '@pubkey-resolver/web-index-ui'
 import { UiBack, UiDebugModal, UiError, UiLoader, UiPage, UiTabRoute, UiTabRoutes } from '@pubkey-ui/core'
 import { useParams } from 'react-router-dom'
@@ -21,6 +22,11 @@ export default function UserIndexDetailFeature() {
       path: 'info',
       label: 'Info',
       element: <UserIndexDetailInfoTab indexId={indexId} />,
+    },
+    {
+      path: 'entries',
+      label: 'Entries',
+      element: <UserIndexEntryFeature cluster={item.cluster} indexAddress={item.address} />,
     },
   ]
 

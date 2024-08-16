@@ -1,6 +1,7 @@
 import { ActionIcon, Group, TextInput } from '@mantine/core'
 import { Index } from '@pubkey-resolver/sdk'
 import { useAdminFindOneIndex, useAdminResolveWallet } from '@pubkey-resolver/web-index-data-access'
+import { AdminIndexEntryFeature } from '@pubkey-resolver/web-index-entry-feature'
 import { IndexUiItem } from '@pubkey-resolver/web-index-ui'
 import {
   UiBack,
@@ -45,6 +46,11 @@ export default function AdminIndexDetailFeature() {
       path: 'resolve',
       label: 'Resolve',
       element: <AdminIndexResolveWalletFeature item={item} />,
+    },
+    {
+      path: 'entries',
+      label: 'Entries',
+      element: <AdminIndexEntryFeature cluster={item.cluster} indexAddress={item.address} />,
     },
   ]
 
