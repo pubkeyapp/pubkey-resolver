@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ApiAccountFeatureModule } from '@pubkey-resolver/api-account-feature'
+import { ApiIndexFeatureModule } from '@pubkey-resolver/api-index-feature'
 import { ApiAuthFeatureModule } from '@pubkey-resolver/api-auth-feature'
 import { ApiCoreDataAccessModule } from '@pubkey-resolver/api-core-data-access'
 import { ApiIdentityFeatureModule } from '@pubkey-resolver/api-identity-feature'
@@ -13,7 +13,7 @@ const imports = [
   ApiCoreDataAccessModule,
   ApiIdentityFeatureModule,
   ApiUserFeatureModule,
-  ApiAccountFeatureModule,
+  ApiIndexFeatureModule,
 ]
 
 @Module({

@@ -30,7 +30,7 @@ export class ApiAuthStrategyService {
     })
 
     if (found && req.user?.id && found.ownerId !== req.user?.id) {
-      throw new Error(`This ${provider} account is already linked to another user.`)
+      throw new Error(`This ${provider} index is already linked to another user.`)
     }
 
     if (found) {

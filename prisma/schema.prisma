@@ -7,21 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account {
-  id        String         @id @default(cuid())
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  type      AccountType
-  cluster   NetworkCluster
-  program   String
-  address   String
-  data      Json?
-  dataHash  String?
-  label     String?
-
-  @@unique([address, cluster])
-}
-
 model Identity {
   id           String              @id @default(cuid())
   createdAt    DateTime            @default(now())
@@ -54,6 +39,21 @@ model IdentityChallenge {
   providerId String
 }
 
+model Index {
+  id        String         @id @default(cuid())
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  type      IndexType
+  cluster   NetworkCluster
+  program   String
+  address   String
+  data      Json?
+  dataHash  String?
+  label     String?
+
+  @@unique([address, cluster])
+}
+
 model User {
   id         String     @id @default(cuid())
   createdAt  DateTime   @default(now())
@@ -68,15 +68,13 @@ model User {
   identities Identity[]
 }
 
-enum AccountType {
-  SolanaGenesis
-  SolanaFungible
-  SolanaNonFungible
-  SolanaWallet
-}
-
 enum IdentityProvider {
   GitHub
+}
+
+enum IndexType {
+  SolanaCollection
+  SolanaMint
 }
 
 enum NetworkCluster {

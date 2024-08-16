@@ -4,7 +4,7 @@ import { web3JsRpc } from '@metaplex-foundation/umi-rpc-web3js'
 import { Injectable, Logger } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { NetworkCluster } from '@prisma/client'
-import { Connection } from '@solana/web3.js'
+import { Connection, PublicKey } from '@solana/web3.js'
 import { CORE_APP_STARTED } from './api-core.events'
 import { ApiCoreConfigService, NetworkClusterMap } from './config/api-core-config.service'
 
@@ -63,6 +63,27 @@ export class ApiCoreNetworkService {
       throw new Error(`getConnection: Error getting connection for cluster: ${cluster}`)
     }
     return connection
+  }
+
+  async getTokenAccountsByMint({
+    cluster,
+    wallet,
+    programId,
+    mint,
+  }: {
+    cluster: NetworkCluster
+    wallet: string
+    programId: string
+    mint: string
+  }) {
+    const conn = this.getConnection(cluster)
+
+    return conn
+      .getParsedTokenAccountsByOwner(new PublicKey(wallet), {
+        programId: new PublicKey(programId),
+        mint: new PublicKey(mint),
+      })
+      .then((res) => res.value ?? [])
   }
 
   getUmi(cluster: NetworkCluster) {

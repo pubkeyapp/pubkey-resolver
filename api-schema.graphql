@@ -2,63 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Account {
-  address: String!
-  cluster: NetworkCluster!
-  createdAt: DateTime
-  data: JSON
-  dataHash: String
-  id: String!
-  label: String
-  program: String!
-  type: AccountType!
-  updatedAt: DateTime
-}
-
-input AccountAdminCreateInput {
-  address: String!
-  cluster: NetworkCluster!
-  label: String
-  type: AccountType!
-}
-
-input AccountAdminFindManyInput {
-  cluster: NetworkCluster
-  limit: Int = 10
-  page: Int = 1
-  search: String
-  type: AccountType
-}
-
-input AccountAdminResolveInput {
-  address: String!
-  cluster: NetworkCluster!
-}
-
-input AccountAdminUpdateInput {
-  label: String
-}
-
-type AccountPaging {
-  data: [Account!]!
-  meta: PagingMeta!
-}
-
-enum AccountType {
-  SolanaFungible
-  SolanaGenesis
-  SolanaNonFungible
-  SolanaWallet
-}
-
-input AccountUserFindManyInput {
-  cluster: NetworkCluster
-  limit: Int = 10
-  page: Int = 1
-  search: String
-  type: AccountType
-}
-
 type AppConfig {
   authGithubEnabled: Boolean!
   authPasswordEnabled: Boolean!
@@ -117,6 +60,61 @@ input IdentityUserFindManyInput {
   username: String!
 }
 
+type Index {
+  address: String!
+  cluster: NetworkCluster!
+  createdAt: DateTime
+  data: JSON
+  dataHash: String
+  id: String!
+  label: String
+  program: String!
+  type: IndexType!
+  updatedAt: DateTime
+}
+
+input IndexAdminCreateInput {
+  address: String!
+  cluster: NetworkCluster!
+  label: String
+  type: IndexType!
+}
+
+input IndexAdminFindManyInput {
+  cluster: NetworkCluster
+  limit: Int = 10
+  page: Int = 1
+  search: String
+  type: IndexType
+}
+
+input IndexAdminResolveInput {
+  address: String!
+  cluster: NetworkCluster!
+}
+
+input IndexAdminUpdateInput {
+  label: String
+}
+
+type IndexPaging {
+  data: [Index!]!
+  meta: PagingMeta!
+}
+
+enum IndexType {
+  SolanaCollection
+  SolanaMint
+}
+
+input IndexUserFindManyInput {
+  cluster: NetworkCluster
+  limit: Int = 10
+  page: Int = 1
+  search: String
+  type: IndexType
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -128,13 +126,13 @@ input LoginInput {
 }
 
 type Mutation {
-  adminCreateAccount(input: AccountAdminCreateInput!): Account
   adminCreateIdentity(input: IdentityAdminCreateInput!): Identity
+  adminCreateIndex(input: IndexAdminCreateInput!): Index
   adminCreateUser(input: UserAdminCreateInput!): User
-  adminDeleteAccount(accountId: String!): Boolean
   adminDeleteIdentity(identityId: String!): Boolean
+  adminDeleteIndex(indexId: String!): Boolean
   adminDeleteUser(userId: String!): Boolean
-  adminUpdateAccount(accountId: String!, input: AccountAdminUpdateInput!): Account
+  adminUpdateIndex(indexId: String!, input: IndexAdminUpdateInput!): Index
   adminUpdateUser(input: UserAdminUpdateInput!, userId: String!): User
   login(input: LoginInput!): User
   logout: Boolean
@@ -161,21 +159,21 @@ type PagingMeta {
 }
 
 type Query {
-  adminFindManyAccount(input: AccountAdminFindManyInput!): AccountPaging!
   adminFindManyIdentity(input: IdentityAdminFindManyInput!): [Identity!]
+  adminFindManyIndex(input: IndexAdminFindManyInput!): IndexPaging!
   adminFindManyUser(input: UserAdminFindManyInput!): UserPaging!
-  adminFindOneAccount(accountId: String!): Account
+  adminFindOneIndex(indexId: String!): Index
   adminFindOneUser(userId: String!): User
-  adminGetAccountInfo(input: AccountAdminResolveInput!): JSON
-  adminResolveAccount(input: AccountAdminResolveInput!): JSON
-  adminResolveWallet(input: AccountAdminResolveInput!): JSON
+  adminGetAccountInfo(input: IndexAdminResolveInput!): JSON
+  adminResolveIndex(input: IndexAdminResolveInput!): JSON
+  adminResolveWallet(input: IndexAdminResolveInput!, wallet: String!): JSON
   appConfig: AppConfig!
   me: User
   uptime: Float!
-  userFindManyAccount(input: AccountUserFindManyInput!): AccountPaging!
   userFindManyIdentity(input: IdentityUserFindManyInput!): [Identity!]
+  userFindManyIndex(input: IndexUserFindManyInput!): IndexPaging!
   userFindManyUser(input: UserUserFindManyInput!): UserPaging!
-  userFindOneAccount(accountId: String!): Account
+  userFindOneIndex(indexId: String!): Index
   userFindOneUser(username: String!): User
 }
 

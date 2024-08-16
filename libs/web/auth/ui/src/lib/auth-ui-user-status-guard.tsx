@@ -13,7 +13,7 @@ export function AuthUiUserStatusGuard({ status }: { status: UserStatus }) {
   ) : (
     <AuthUiFull>
       <UiStack>
-        <UiWarning message={`Your account is not ${status.toLowerCase()}.`} />
+        <UiWarning message={`Your index is not ${status.toLowerCase()}.`} />
         <Button onClick={() => logout()} variant="light">
           Logout
         </Button>

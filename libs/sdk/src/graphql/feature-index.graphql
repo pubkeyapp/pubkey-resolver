@@ -1,0 +1,73 @@
+fragment IndexDetails on Index {
+  createdAt
+  id
+  type
+  cluster
+  address
+  label
+  data
+  dataHash
+  program
+  updatedAt
+}
+
+query adminFindManyIndex($input: IndexAdminFindManyInput!) {
+  paging: adminFindManyIndex(input: $input) {
+    data {
+      ...IndexDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query adminFindOneIndex($indexId: String!) {
+  item: adminFindOneIndex(indexId: $indexId) {
+    ...IndexDetails
+  }
+}
+query adminGetAccountInfo($input: IndexAdminResolveInput!) {
+  item: adminGetAccountInfo(input: $input)
+}
+
+query adminResolveIndex($input: IndexAdminResolveInput!) {
+  item: adminResolveIndex(input: $input)
+}
+
+query adminResolveWallet($input: IndexAdminResolveInput!, $wallet: String!) {
+  item: adminResolveWallet(input: $input, wallet: $wallet)
+}
+
+mutation adminCreateIndex($input: IndexAdminCreateInput!) {
+  created: adminCreateIndex(input: $input) {
+    ...IndexDetails
+  }
+}
+
+mutation adminUpdateIndex($indexId: String!, $input: IndexAdminUpdateInput!) {
+  updated: adminUpdateIndex(indexId: $indexId, input: $input) {
+    ...IndexDetails
+  }
+}
+
+mutation adminDeleteIndex($indexId: String!) {
+  deleted: adminDeleteIndex(indexId: $indexId)
+}
+
+query userFindManyIndex($input: IndexUserFindManyInput!) {
+  paging: userFindManyIndex(input: $input) {
+    data {
+      ...IndexDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query userFindOneIndex($indexId: String!) {
+  item: userFindOneIndex(indexId: $indexId) {
+    ...IndexDetails
+  }
+}
