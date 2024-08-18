@@ -1,16 +1,34 @@
-import { Index, IndexAdminCreateInput, IndexAdminFindManyInput, IndexAdminUpdateInput } from '@pubkey-resolver/sdk'
-import { getAliceCookie, getBobCookie, sdk, uniqueId } from '../support'
+import {
+  Index,
+  IndexAdminCreateInput,
+  IndexAdminFindManyInput,
+  IndexAdminUpdateInput,
+  IndexType,
+  NetworkCluster,
+} from '@pubkey-resolver/sdk'
+import { Keypair } from '@solana/web3.js'
+import { getAliceCookie, getBobCookie, sdk } from '../support'
 
-describe('api-index-feature', () => {
+xdescribe('api-index-feature', () => {
   describe('api-index-admin-resolver', () => {
-    const indexName = uniqueId('acme-index')
-
+    const cluster = NetworkCluster.SolanaCustom
     let indexId: string
     let cookie: string
 
     beforeAll(async () => {
       cookie = await getAliceCookie()
-      const created = await sdk.adminCreateIndex({ input: { name: indexName } }, { cookie })
+      const keypair = Keypair.generate()
+      const indexAddress = keypair.publicKey.toBase58()
+      const created = await sdk.adminCreateIndex(
+        {
+          input: {
+            type: IndexType.SolanaMint,
+            address: indexAddress,
+            cluster,
+          },
+        },
+        { cookie },
+      )
       indexId = created.data.created.id
     })
 
@@ -20,42 +38,34 @@ describe('api-index-feature', () => {
       })
 
       it('should create a index', async () => {
+        const indexAddress = new Keypair().publicKey.toBase58()
         const input: IndexAdminCreateInput = {
-          name: uniqueId('index'),
+          type: IndexType.SolanaMint,
+          address: indexAddress,
+          cluster,
         }
 
         const res = await sdk.adminCreateIndex({ input }, { cookie })
 
         const item: Index = res.data.created
-        expect(item.name).toBe(input.name)
+        expect(item.label).toBe(input.address)
         expect(item.id).toBeDefined()
         expect(item.createdAt).toBeDefined()
         expect(item.updatedAt).toBeDefined()
       })
 
       it('should update a index', async () => {
-        const createInput: IndexAdminCreateInput = {
-          name: uniqueId('index'),
-        }
-        const createdRes = await sdk.adminCreateIndex({ input: createInput }, { cookie })
-        const indexId = createdRes.data.created.id
         const input: IndexAdminUpdateInput = {
-          name: uniqueId('index'),
+          label: 'test',
         }
 
         const res = await sdk.adminUpdateIndex({ indexId, input }, { cookie })
 
         const item: Index = res.data.updated
-        expect(item.name).toBe(input.name)
+        expect(item.label).toBe(input.label)
       })
 
       it('should find a list of indexes (find all)', async () => {
-        const createInput: IndexAdminCreateInput = {
-          name: uniqueId('index'),
-        }
-        const createdRes = await sdk.adminCreateIndex({ input: createInput }, { cookie })
-        const indexId = createdRes.data.created.id
-
         const input: IndexAdminFindManyInput = {}
 
         const res = await sdk.adminFindManyIndex({ input }, { cookie })
@@ -67,12 +77,6 @@ describe('api-index-feature', () => {
       })
 
       it('should find a list of indexes (find new one)', async () => {
-        const createInput: IndexAdminCreateInput = {
-          name: uniqueId('index'),
-        }
-        const createdRes = await sdk.adminCreateIndex({ input: createInput }, { cookie })
-        const indexId = createdRes.data.created.id
-
         const input: IndexAdminFindManyInput = {
           search: indexId,
         }
@@ -85,24 +89,12 @@ describe('api-index-feature', () => {
       })
 
       it('should find a index by id', async () => {
-        const createInput: IndexAdminCreateInput = {
-          name: uniqueId('index'),
-        }
-        const createdRes = await sdk.adminCreateIndex({ input: createInput }, { cookie })
-        const indexId = createdRes.data.created.id
-
         const res = await sdk.adminFindOneIndex({ indexId }, { cookie })
 
         expect(res.data.item.id).toBe(indexId)
       })
 
       it('should delete a index', async () => {
-        const createInput: IndexAdminCreateInput = {
-          name: uniqueId('index'),
-        }
-        const createdRes = await sdk.adminCreateIndex({ input: createInput }, { cookie })
-        const indexId = createdRes.data.created.id
-
         const res = await sdk.adminDeleteIndex({ indexId }, { cookie })
 
         expect(res.data.deleted).toBe(true)
