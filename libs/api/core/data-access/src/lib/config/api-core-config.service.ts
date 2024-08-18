@@ -68,10 +68,6 @@ export class ApiCoreConfigService {
     return this.service.get<string>('apiUrl') as string
   }
 
-  get cacheBasePath(): string {
-    return this.service.get<string>('cacheBasePath') as string
-  }
-
   get cookieDomains(): string[] {
     return this.service.get<string[]>('cookieDomains') ?? []
   }

@@ -28,8 +28,6 @@ export interface ApiCoreConfig {
   // Username and Password Authentication
   authPasswordEnabled: boolean
   authRegisterEnabled: boolean
-  // Cache
-  cacheBasePath: string
   // Cookies
   cookieDomains: string[]
   cookieName: string
@@ -57,7 +55,6 @@ export function configuration(): ApiCoreConfig {
     authGithubEnabled: process.env['AUTH_GITHUB_ENABLED'] === 'true',
     authPasswordEnabled: process.env['AUTH_PASSWORD_ENABLED'] === 'true',
     authRegisterEnabled: process.env['AUTH_REGISTER_ENABLED'] === 'true',
-    cacheBasePath: process.env['CACHE_BASE_PATH'] as string,
     cookieDomains,
     cookieName: '__session',
     cookieSecure: process.env['COOKIE_SECURE'] === 'true',

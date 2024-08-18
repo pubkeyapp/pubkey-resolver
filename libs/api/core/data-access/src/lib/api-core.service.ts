@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { IdentityProvider } from '@prisma/client'
-import { Cache, createCache } from '@pubkey-resolver/cache'
 import { ApiCoreNetworkService } from './api-core-network.service'
 import { ApiCorePrismaClient, prismaClient } from './api-core-prisma-client'
 import { ApiCoreConfigService } from './config/api-core-config.service'
@@ -11,7 +10,7 @@ import { getEnvEnvTemplate } from './templates/get-env-env-template'
 @Injectable()
 export class ApiCoreService {
   readonly data: ApiCorePrismaClient = prismaClient
-  readonly cache: Cache = createCache({ base: this.config.cacheBasePath })
+
   constructor(
     readonly config: ApiCoreConfigService,
     readonly eventEmitter: EventEmitter2,

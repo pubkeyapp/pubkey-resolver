@@ -27,8 +27,6 @@
       "@pubkey-resolver/api-index-feature": ["libs/api/index/feature/src/index.ts"],
       "@pubkey-resolver/api-user-data-access": ["libs/api/user/data-access/src/index.ts"],
       "@pubkey-resolver/api-user-feature": ["libs/api/user/feature/src/index.ts"],
-      "@pubkey-resolver/cache": ["packages/cache/src/index.ts"],
-      "@pubkey-resolver/cache-client": ["packages/cache-client/src/index.ts"],
       "@pubkey-resolver/resolvers": ["packages/resolvers/src/index.ts"],
       "@pubkey-resolver/sdk": ["libs/sdk/src/index.ts"],
       "@pubkey-resolver/tools": ["libs/tools/src/index.ts"],
