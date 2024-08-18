@@ -35,6 +35,7 @@ export interface ApiCoreConfig {
   corsOrigins: string[]
   databaseProvision: boolean
   environment: Env
+  heliusApiKey?: string
   host: string
   jwtSecret: string
   networkClusterSolanaCustom?: string
@@ -61,6 +62,7 @@ export function configuration(): ApiCoreConfig {
     corsOrigins,
     databaseProvision: process.env['DATABASE_PROVISION'] === 'true',
     environment: (process.env['NODE_ENV'] as Env) || 'development',
+    heliusApiKey: process.env['HELIUS_API_KEY'],
     host: process.env['HOST'] as string,
     jwtSecret: process.env['JWT_SECRET'] as string,
     networkClusterSolanaCustom: process.env['NETWORK_CLUSTER_SOLANA_CUSTOM'],

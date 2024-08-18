@@ -21,6 +21,7 @@ export const validationSchema = Joi.object({
   DATABASE_URL: Joi.string(),
   GRAPHQL_PLAYGROUND: Joi.boolean().default(false),
   JWT_SECRET: Joi.string().required(),
+  HELIUS_API_KEY: Joi.string().optional(),
   HOST: Joi.string().default('0.0.0.0'),
   NETWORK_CLUSTER_SOLANA_CUSTOM: Joi.string().optional(),
   NETWORK_CLUSTER_SOLANA_DEVNET: Joi.string().optional(),

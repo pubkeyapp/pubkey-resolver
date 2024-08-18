@@ -106,6 +106,10 @@ export class ApiCoreConfigService {
     return this.service.get('environment')
   }
 
+  get heliusApiKey() {
+    return this.service.get('heliusApiKey')
+  }
+
   get host() {
     return this.service.get<string>('host')
   }
