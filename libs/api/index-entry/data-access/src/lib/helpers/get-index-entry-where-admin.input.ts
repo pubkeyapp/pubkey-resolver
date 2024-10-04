@@ -11,7 +11,7 @@ export function getIndexEntryWhereAdminInput(input: IndexEntryAdminFindManyInput
     where.OR = [
       { id: { contains: input.search, mode: 'insensitive' } },
       { address: { contains: input.search, mode: 'insensitive' } },
-      { wallet: { contains: input.search, mode: 'insensitive' } },
+      { walletId: { contains: input.search, mode: 'insensitive' } },
       { label: { contains: input.search, mode: 'insensitive' } },
     ]
   }

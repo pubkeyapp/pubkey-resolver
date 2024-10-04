@@ -95,7 +95,7 @@ type IndexEntry {
   label: String
   program: String!
   updatedAt: DateTime
-  wallet: String!
+  walletId: String!
 }
 
 input IndexEntryAdminFindManyInput {
@@ -137,6 +137,43 @@ input IndexUserFindManyInput {
   type: IndexType
 }
 
+type IndexWallet {
+  createdAt: DateTime
+  id: String!
+  index: Index
+  indexId: String!
+  updatedAt: DateTime
+  wallet: Wallet
+  walletId: String!
+}
+
+input IndexWalletAdminFindManyInput {
+  limit: Int = 10
+  page: Int = 1
+  search: String
+  walletId: String!
+}
+
+input IndexWalletAdminUpdateInput {
+  updatedAt: String
+}
+
+type IndexWalletPaging {
+  data: [IndexWallet!]!
+  meta: PagingMeta!
+}
+
+input IndexWalletUserFindManyInput {
+  limit: Int = 10
+  page: Int = 1
+  search: String
+  walletId: String!
+}
+
+input IndexWalletUserUpdateInput {
+  updatedAt: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -151,17 +188,27 @@ type Mutation {
   adminCreateIdentity(input: IdentityAdminCreateInput!): Identity
   adminCreateIndex(input: IndexAdminCreateInput!): Index
   adminCreateUser(input: UserAdminCreateInput!): User
+  adminCreateWallet(input: WalletAdminCreateInput!): Wallet
   adminDeleteIdentity(identityId: String!): Boolean
   adminDeleteIndex(indexId: String!): Boolean
   adminDeleteIndexEntry(indexEntryId: String!): Boolean
+  adminDeleteIndexWallet(indexWalletId: String!): Boolean
   adminDeleteUser(userId: String!): Boolean
+  adminDeleteWallet(walletId: String!): Boolean
   adminUpdateIndex(indexId: String!, input: IndexAdminUpdateInput!): Index
+  adminUpdateIndexWallet(indexWalletId: String!, input: IndexWalletAdminUpdateInput!): IndexWallet
   adminUpdateUser(input: UserAdminUpdateInput!, userId: String!): User
+  adminUpdateWallet(input: WalletAdminUpdateInput!, walletId: String!): Wallet
   login(input: LoginInput!): User
   logout: Boolean
   register(input: RegisterInput!): User
+  userCreateWallet(input: WalletUserCreateInput!): Wallet
   userDeleteIdentity(identityId: String!): Boolean
+  userDeleteIndexWallet(indexWalletId: String!): Boolean
+  userDeleteWallet(walletId: String!): Boolean
+  userUpdateIndexWallet(indexWalletId: String!, input: IndexWalletUserUpdateInput!): IndexWallet
   userUpdateUser(input: UserUserUpdateInput!): User
+  userUpdateWallet(input: WalletUserUpdateInput!, walletId: String!): Wallet
 }
 
 enum NetworkCluster {
@@ -185,10 +232,14 @@ type Query {
   adminFindManyIdentity(input: IdentityAdminFindManyInput!): [Identity!]
   adminFindManyIndex(input: IndexAdminFindManyInput!): IndexPaging!
   adminFindManyIndexEntry(input: IndexEntryAdminFindManyInput!): IndexEntryPaging!
+  adminFindManyIndexWallet(input: IndexWalletAdminFindManyInput!): IndexWalletPaging!
   adminFindManyUser(input: UserAdminFindManyInput!): UserPaging!
+  adminFindManyWallet(input: WalletAdminFindManyInput!): WalletPaging!
   adminFindOneIndex(indexId: String!): Index
   adminFindOneIndexEntry(indexEntryId: String!): IndexEntry
+  adminFindOneIndexWallet(indexWalletId: String!): IndexWallet
   adminFindOneUser(userId: String!): User
+  adminFindOneWallet(walletId: String!): Wallet
   adminGetAccountInfo(input: IndexAdminResolveInput!): JSON
   adminResolveIndex(input: IndexAdminResolveInput!): JSON
   adminResolveWallet(input: IndexAdminResolveInput!, wallet: String!): JSON
@@ -198,10 +249,14 @@ type Query {
   userFindManyIdentity(input: IdentityUserFindManyInput!): [Identity!]
   userFindManyIndex(input: IndexUserFindManyInput!): IndexPaging!
   userFindManyIndexEntry(input: IndexEntryUserFindManyInput!): IndexEntryPaging!
+  userFindManyIndexWallet(input: IndexWalletUserFindManyInput!): IndexWalletPaging!
   userFindManyUser(input: UserUserFindManyInput!): UserPaging!
+  userFindManyWallet(input: WalletUserFindManyInput!): WalletPaging!
   userFindOneIndex(indexId: String!): Index
   userFindOneIndexEntry(indexEntryId: String!): IndexEntry
+  userFindOneIndexWallet(indexWalletId: String!): IndexWallet
   userFindOneUser(username: String!): User
+  userFindOneWallet(walletId: String!): Wallet
 }
 
 input RegisterInput {
@@ -271,4 +326,46 @@ input UserUserUpdateInput {
   avatarUrl: String
   developer: Boolean
   name: String
+}
+
+type Wallet {
+  createdAt: DateTime
+  id: String!
+  label: String!
+  updatedAt: DateTime
+}
+
+input WalletAdminCreateInput {
+  id: String!
+  label: String
+}
+
+input WalletAdminFindManyInput {
+  limit: Int = 10
+  page: Int = 1
+  search: String
+}
+
+input WalletAdminUpdateInput {
+  label: String
+}
+
+type WalletPaging {
+  data: [Wallet!]!
+  meta: PagingMeta!
+}
+
+input WalletUserCreateInput {
+  id: String!
+  label: String
+}
+
+input WalletUserFindManyInput {
+  limit: Int = 10
+  page: Int = 1
+  search: String
+}
+
+input WalletUserUpdateInput {
+  label: String
 }

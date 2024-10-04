@@ -116,7 +116,7 @@ export type IndexEntry = {
   label?: Maybe<Scalars['String']['output']>
   program: Scalars['String']['output']
   updatedAt?: Maybe<Scalars['DateTime']['output']>
-  wallet: Scalars['String']['output']
+  walletId: Scalars['String']['output']
 }
 
 export type IndexEntryAdminFindManyInput = {
@@ -160,6 +160,45 @@ export type IndexUserFindManyInput = {
   type?: InputMaybe<IndexType>
 }
 
+export type IndexWallet = {
+  __typename?: 'IndexWallet'
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  id: Scalars['String']['output']
+  index?: Maybe<Index>
+  indexId: Scalars['String']['output']
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  wallet?: Maybe<Wallet>
+  walletId: Scalars['String']['output']
+}
+
+export type IndexWalletAdminFindManyInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+  walletId: Scalars['String']['input']
+}
+
+export type IndexWalletAdminUpdateInput = {
+  updatedAt?: InputMaybe<Scalars['String']['input']>
+}
+
+export type IndexWalletPaging = {
+  __typename?: 'IndexWalletPaging'
+  data: Array<IndexWallet>
+  meta: PagingMeta
+}
+
+export type IndexWalletUserFindManyInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+  walletId: Scalars['String']['input']
+}
+
+export type IndexWalletUserUpdateInput = {
+  updatedAt?: InputMaybe<Scalars['String']['input']>
+}
+
 export type LoginInput = {
   password: Scalars['String']['input']
   username: Scalars['String']['input']
@@ -170,17 +209,27 @@ export type Mutation = {
   adminCreateIdentity?: Maybe<Identity>
   adminCreateIndex?: Maybe<Index>
   adminCreateUser?: Maybe<User>
+  adminCreateWallet?: Maybe<Wallet>
   adminDeleteIdentity?: Maybe<Scalars['Boolean']['output']>
   adminDeleteIndex?: Maybe<Scalars['Boolean']['output']>
   adminDeleteIndexEntry?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteIndexWallet?: Maybe<Scalars['Boolean']['output']>
   adminDeleteUser?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteWallet?: Maybe<Scalars['Boolean']['output']>
   adminUpdateIndex?: Maybe<Index>
+  adminUpdateIndexWallet?: Maybe<IndexWallet>
   adminUpdateUser?: Maybe<User>
+  adminUpdateWallet?: Maybe<Wallet>
   login?: Maybe<User>
   logout?: Maybe<Scalars['Boolean']['output']>
   register?: Maybe<User>
+  userCreateWallet?: Maybe<Wallet>
   userDeleteIdentity?: Maybe<Scalars['Boolean']['output']>
+  userDeleteIndexWallet?: Maybe<Scalars['Boolean']['output']>
+  userDeleteWallet?: Maybe<Scalars['Boolean']['output']>
+  userUpdateIndexWallet?: Maybe<IndexWallet>
   userUpdateUser?: Maybe<User>
+  userUpdateWallet?: Maybe<Wallet>
 }
 
 export type MutationAdminCreateIdentityArgs = {
@@ -195,6 +244,10 @@ export type MutationAdminCreateUserArgs = {
   input: UserAdminCreateInput
 }
 
+export type MutationAdminCreateWalletArgs = {
+  input: WalletAdminCreateInput
+}
+
 export type MutationAdminDeleteIdentityArgs = {
   identityId: Scalars['String']['input']
 }
@@ -207,8 +260,16 @@ export type MutationAdminDeleteIndexEntryArgs = {
   indexEntryId: Scalars['String']['input']
 }
 
+export type MutationAdminDeleteIndexWalletArgs = {
+  indexWalletId: Scalars['String']['input']
+}
+
 export type MutationAdminDeleteUserArgs = {
   userId: Scalars['String']['input']
+}
+
+export type MutationAdminDeleteWalletArgs = {
+  walletId: Scalars['String']['input']
 }
 
 export type MutationAdminUpdateIndexArgs = {
@@ -216,9 +277,19 @@ export type MutationAdminUpdateIndexArgs = {
   input: IndexAdminUpdateInput
 }
 
+export type MutationAdminUpdateIndexWalletArgs = {
+  indexWalletId: Scalars['String']['input']
+  input: IndexWalletAdminUpdateInput
+}
+
 export type MutationAdminUpdateUserArgs = {
   input: UserAdminUpdateInput
   userId: Scalars['String']['input']
+}
+
+export type MutationAdminUpdateWalletArgs = {
+  input: WalletAdminUpdateInput
+  walletId: Scalars['String']['input']
 }
 
 export type MutationLoginArgs = {
@@ -229,12 +300,34 @@ export type MutationRegisterArgs = {
   input: RegisterInput
 }
 
+export type MutationUserCreateWalletArgs = {
+  input: WalletUserCreateInput
+}
+
 export type MutationUserDeleteIdentityArgs = {
   identityId: Scalars['String']['input']
 }
 
+export type MutationUserDeleteIndexWalletArgs = {
+  indexWalletId: Scalars['String']['input']
+}
+
+export type MutationUserDeleteWalletArgs = {
+  walletId: Scalars['String']['input']
+}
+
+export type MutationUserUpdateIndexWalletArgs = {
+  indexWalletId: Scalars['String']['input']
+  input: IndexWalletUserUpdateInput
+}
+
 export type MutationUserUpdateUserArgs = {
   input: UserUserUpdateInput
+}
+
+export type MutationUserUpdateWalletArgs = {
+  input: WalletUserUpdateInput
+  walletId: Scalars['String']['input']
 }
 
 export enum NetworkCluster {
@@ -260,10 +353,14 @@ export type Query = {
   adminFindManyIdentity?: Maybe<Array<Identity>>
   adminFindManyIndex: IndexPaging
   adminFindManyIndexEntry: IndexEntryPaging
+  adminFindManyIndexWallet: IndexWalletPaging
   adminFindManyUser: UserPaging
+  adminFindManyWallet: WalletPaging
   adminFindOneIndex?: Maybe<Index>
   adminFindOneIndexEntry?: Maybe<IndexEntry>
+  adminFindOneIndexWallet?: Maybe<IndexWallet>
   adminFindOneUser?: Maybe<User>
+  adminFindOneWallet?: Maybe<Wallet>
   adminGetAccountInfo?: Maybe<Scalars['JSON']['output']>
   adminResolveIndex?: Maybe<Scalars['JSON']['output']>
   adminResolveWallet?: Maybe<Scalars['JSON']['output']>
@@ -273,10 +370,14 @@ export type Query = {
   userFindManyIdentity?: Maybe<Array<Identity>>
   userFindManyIndex: IndexPaging
   userFindManyIndexEntry: IndexEntryPaging
+  userFindManyIndexWallet: IndexWalletPaging
   userFindManyUser: UserPaging
+  userFindManyWallet: WalletPaging
   userFindOneIndex?: Maybe<Index>
   userFindOneIndexEntry?: Maybe<IndexEntry>
+  userFindOneIndexWallet?: Maybe<IndexWallet>
   userFindOneUser?: Maybe<User>
+  userFindOneWallet?: Maybe<Wallet>
 }
 
 export type QueryAdminFindManyIdentityArgs = {
@@ -291,8 +392,16 @@ export type QueryAdminFindManyIndexEntryArgs = {
   input: IndexEntryAdminFindManyInput
 }
 
+export type QueryAdminFindManyIndexWalletArgs = {
+  input: IndexWalletAdminFindManyInput
+}
+
 export type QueryAdminFindManyUserArgs = {
   input: UserAdminFindManyInput
+}
+
+export type QueryAdminFindManyWalletArgs = {
+  input: WalletAdminFindManyInput
 }
 
 export type QueryAdminFindOneIndexArgs = {
@@ -303,8 +412,16 @@ export type QueryAdminFindOneIndexEntryArgs = {
   indexEntryId: Scalars['String']['input']
 }
 
+export type QueryAdminFindOneIndexWalletArgs = {
+  indexWalletId: Scalars['String']['input']
+}
+
 export type QueryAdminFindOneUserArgs = {
   userId: Scalars['String']['input']
+}
+
+export type QueryAdminFindOneWalletArgs = {
+  walletId: Scalars['String']['input']
 }
 
 export type QueryAdminGetAccountInfoArgs = {
@@ -332,8 +449,16 @@ export type QueryUserFindManyIndexEntryArgs = {
   input: IndexEntryUserFindManyInput
 }
 
+export type QueryUserFindManyIndexWalletArgs = {
+  input: IndexWalletUserFindManyInput
+}
+
 export type QueryUserFindManyUserArgs = {
   input: UserUserFindManyInput
+}
+
+export type QueryUserFindManyWalletArgs = {
+  input: WalletUserFindManyInput
 }
 
 export type QueryUserFindOneIndexArgs = {
@@ -344,8 +469,16 @@ export type QueryUserFindOneIndexEntryArgs = {
   indexEntryId: Scalars['String']['input']
 }
 
+export type QueryUserFindOneIndexWalletArgs = {
+  indexWalletId: Scalars['String']['input']
+}
+
 export type QueryUserFindOneUserArgs = {
   username: Scalars['String']['input']
+}
+
+export type QueryUserFindOneWalletArgs = {
+  walletId: Scalars['String']['input']
 }
 
 export type RegisterInput = {
@@ -417,6 +550,50 @@ export type UserUserUpdateInput = {
   avatarUrl?: InputMaybe<Scalars['String']['input']>
   developer?: InputMaybe<Scalars['Boolean']['input']>
   name?: InputMaybe<Scalars['String']['input']>
+}
+
+export type Wallet = {
+  __typename?: 'Wallet'
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  id: Scalars['String']['output']
+  label: Scalars['String']['output']
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+}
+
+export type WalletAdminCreateInput = {
+  id: Scalars['String']['input']
+  label?: InputMaybe<Scalars['String']['input']>
+}
+
+export type WalletAdminFindManyInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+}
+
+export type WalletAdminUpdateInput = {
+  label?: InputMaybe<Scalars['String']['input']>
+}
+
+export type WalletPaging = {
+  __typename?: 'WalletPaging'
+  data: Array<Wallet>
+  meta: PagingMeta
+}
+
+export type WalletUserCreateInput = {
+  id: Scalars['String']['input']
+  label?: InputMaybe<Scalars['String']['input']>
+}
+
+export type WalletUserFindManyInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
+}
+
+export type WalletUserUpdateInput = {
+  label?: InputMaybe<Scalars['String']['input']>
 }
 
 export type LoginMutationVariables = Exact<{
@@ -632,7 +809,7 @@ export type IndexEntryDetailsFragment = {
   data?: any | null
   dataHash?: string | null
   program: string
-  wallet: string
+  walletId: string
   updatedAt?: Date | null
 }
 
@@ -656,7 +833,7 @@ export type AdminFindManyIndexEntryQuery = {
       data?: any | null
       dataHash?: string | null
       program: string
-      wallet: string
+      walletId: string
       updatedAt?: Date | null
     }>
     meta: {
@@ -690,7 +867,7 @@ export type AdminFindOneIndexEntryQuery = {
     data?: any | null
     dataHash?: string | null
     program: string
-    wallet: string
+    walletId: string
     updatedAt?: Date | null
   } | null
 }
@@ -721,7 +898,7 @@ export type UserFindManyIndexEntryQuery = {
       data?: any | null
       dataHash?: string | null
       program: string
-      wallet: string
+      walletId: string
       updatedAt?: Date | null
     }>
     meta: {
@@ -755,8 +932,244 @@ export type UserFindOneIndexEntryQuery = {
     data?: any | null
     dataHash?: string | null
     program: string
-    wallet: string
+    walletId: string
     updatedAt?: Date | null
+  } | null
+}
+
+export type IndexWalletDetailsFragment = {
+  __typename?: 'IndexWallet'
+  createdAt?: Date | null
+  id: string
+  indexId: string
+  walletId: string
+  updatedAt?: Date | null
+  index?: {
+    __typename?: 'Index'
+    createdAt?: Date | null
+    id: string
+    type: IndexType
+    cluster: NetworkCluster
+    address: string
+    label?: string | null
+    data?: any | null
+    dataHash?: string | null
+    program: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type AdminFindManyIndexWalletQueryVariables = Exact<{
+  input: IndexWalletAdminFindManyInput
+}>
+
+export type AdminFindManyIndexWalletQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'IndexWalletPaging'
+    data: Array<{
+      __typename?: 'IndexWallet'
+      createdAt?: Date | null
+      id: string
+      indexId: string
+      walletId: string
+      updatedAt?: Date | null
+      index?: {
+        __typename?: 'Index'
+        createdAt?: Date | null
+        id: string
+        type: IndexType
+        cluster: NetworkCluster
+        address: string
+        label?: string | null
+        data?: any | null
+        dataHash?: string | null
+        program: string
+        updatedAt?: Date | null
+      } | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type AdminFindOneIndexWalletQueryVariables = Exact<{
+  indexWalletId: Scalars['String']['input']
+}>
+
+export type AdminFindOneIndexWalletQuery = {
+  __typename?: 'Query'
+  item?: {
+    __typename?: 'IndexWallet'
+    createdAt?: Date | null
+    id: string
+    indexId: string
+    walletId: string
+    updatedAt?: Date | null
+    index?: {
+      __typename?: 'Index'
+      createdAt?: Date | null
+      id: string
+      type: IndexType
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      updatedAt?: Date | null
+    } | null
+  } | null
+}
+
+export type AdminDeleteIndexWalletMutationVariables = Exact<{
+  indexWalletId: Scalars['String']['input']
+}>
+
+export type AdminDeleteIndexWalletMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
+export type AdminUpdateIndexWalletMutationVariables = Exact<{
+  indexWalletId: Scalars['String']['input']
+  input: IndexWalletAdminUpdateInput
+}>
+
+export type AdminUpdateIndexWalletMutation = {
+  __typename?: 'Mutation'
+  updated?: {
+    __typename?: 'IndexWallet'
+    createdAt?: Date | null
+    id: string
+    indexId: string
+    walletId: string
+    updatedAt?: Date | null
+    index?: {
+      __typename?: 'Index'
+      createdAt?: Date | null
+      id: string
+      type: IndexType
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      updatedAt?: Date | null
+    } | null
+  } | null
+}
+
+export type UserFindManyIndexWalletQueryVariables = Exact<{
+  input: IndexWalletUserFindManyInput
+}>
+
+export type UserFindManyIndexWalletQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'IndexWalletPaging'
+    data: Array<{
+      __typename?: 'IndexWallet'
+      createdAt?: Date | null
+      id: string
+      indexId: string
+      walletId: string
+      updatedAt?: Date | null
+      index?: {
+        __typename?: 'Index'
+        createdAt?: Date | null
+        id: string
+        type: IndexType
+        cluster: NetworkCluster
+        address: string
+        label?: string | null
+        data?: any | null
+        dataHash?: string | null
+        program: string
+        updatedAt?: Date | null
+      } | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type UserFindOneIndexWalletQueryVariables = Exact<{
+  indexWalletId: Scalars['String']['input']
+}>
+
+export type UserFindOneIndexWalletQuery = {
+  __typename?: 'Query'
+  item?: {
+    __typename?: 'IndexWallet'
+    createdAt?: Date | null
+    id: string
+    indexId: string
+    walletId: string
+    updatedAt?: Date | null
+    index?: {
+      __typename?: 'Index'
+      createdAt?: Date | null
+      id: string
+      type: IndexType
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      updatedAt?: Date | null
+    } | null
+  } | null
+}
+
+export type UserDeleteIndexWalletMutationVariables = Exact<{
+  indexWalletId: Scalars['String']['input']
+}>
+
+export type UserDeleteIndexWalletMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
+export type UserUpdateIndexWalletMutationVariables = Exact<{
+  indexWalletId: Scalars['String']['input']
+  input: IndexWalletUserUpdateInput
+}>
+
+export type UserUpdateIndexWalletMutation = {
+  __typename?: 'Mutation'
+  updated?: {
+    __typename?: 'IndexWallet'
+    createdAt?: Date | null
+    id: string
+    indexId: string
+    walletId: string
+    updatedAt?: Date | null
+    index?: {
+      __typename?: 'Index'
+      createdAt?: Date | null
+      id: string
+      type: IndexType
+      cluster: NetworkCluster
+      address: string
+      label?: string | null
+      data?: any | null
+      dataHash?: string | null
+      program: string
+      updatedAt?: Date | null
+    } | null
   } | null
 }
 
@@ -1159,6 +1572,150 @@ export type UserUpdateUserMutation = {
   } | null
 }
 
+export type WalletDetailsFragment = {
+  __typename?: 'Wallet'
+  createdAt?: Date | null
+  id: string
+  label: string
+  updatedAt?: Date | null
+}
+
+export type AdminFindManyWalletQueryVariables = Exact<{
+  input: WalletAdminFindManyInput
+}>
+
+export type AdminFindManyWalletQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'WalletPaging'
+    data: Array<{ __typename?: 'Wallet'; createdAt?: Date | null; id: string; label: string; updatedAt?: Date | null }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type AdminFindOneWalletQueryVariables = Exact<{
+  walletId: Scalars['String']['input']
+}>
+
+export type AdminFindOneWalletQuery = {
+  __typename?: 'Query'
+  item?: { __typename?: 'Wallet'; createdAt?: Date | null; id: string; label: string; updatedAt?: Date | null } | null
+}
+
+export type AdminCreateWalletMutationVariables = Exact<{
+  input: WalletAdminCreateInput
+}>
+
+export type AdminCreateWalletMutation = {
+  __typename?: 'Mutation'
+  created?: {
+    __typename?: 'Wallet'
+    createdAt?: Date | null
+    id: string
+    label: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type AdminUpdateWalletMutationVariables = Exact<{
+  walletId: Scalars['String']['input']
+  input: WalletAdminUpdateInput
+}>
+
+export type AdminUpdateWalletMutation = {
+  __typename?: 'Mutation'
+  updated?: {
+    __typename?: 'Wallet'
+    createdAt?: Date | null
+    id: string
+    label: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type AdminDeleteWalletMutationVariables = Exact<{
+  walletId: Scalars['String']['input']
+}>
+
+export type AdminDeleteWalletMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
+export type UserFindManyWalletQueryVariables = Exact<{
+  input: WalletUserFindManyInput
+}>
+
+export type UserFindManyWalletQuery = {
+  __typename?: 'Query'
+  paging: {
+    __typename?: 'WalletPaging'
+    data: Array<{ __typename?: 'Wallet'; createdAt?: Date | null; id: string; label: string; updatedAt?: Date | null }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
+}
+
+export type UserFindOneWalletQueryVariables = Exact<{
+  walletId: Scalars['String']['input']
+}>
+
+export type UserFindOneWalletQuery = {
+  __typename?: 'Query'
+  item?: { __typename?: 'Wallet'; createdAt?: Date | null; id: string; label: string; updatedAt?: Date | null } | null
+}
+
+export type UserCreateWalletMutationVariables = Exact<{
+  input: WalletUserCreateInput
+}>
+
+export type UserCreateWalletMutation = {
+  __typename?: 'Mutation'
+  created?: {
+    __typename?: 'Wallet'
+    createdAt?: Date | null
+    id: string
+    label: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type UserUpdateWalletMutationVariables = Exact<{
+  walletId: Scalars['String']['input']
+  input: WalletUserUpdateInput
+}>
+
+export type UserUpdateWalletMutation = {
+  __typename?: 'Mutation'
+  updated?: {
+    __typename?: 'Wallet'
+    createdAt?: Date | null
+    id: string
+    label: string
+    updatedAt?: Date | null
+  } | null
+}
+
+export type UserDeleteWalletMutationVariables = Exact<{
+  walletId: Scalars['String']['input']
+}>
+
+export type UserDeleteWalletMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
 export const AppConfigDetailsFragmentDoc = gql`
   fragment AppConfigDetails on AppConfig {
     authGithubEnabled
@@ -1203,7 +1760,7 @@ export const IndexEntryDetailsFragmentDoc = gql`
     data
     dataHash
     program
-    wallet
+    walletId
     updatedAt
   }
 `
@@ -1221,6 +1778,19 @@ export const IndexDetailsFragmentDoc = gql`
     updatedAt
   }
 `
+export const IndexWalletDetailsFragmentDoc = gql`
+  fragment IndexWalletDetails on IndexWallet {
+    createdAt
+    id
+    index {
+      ...IndexDetails
+    }
+    indexId
+    walletId
+    updatedAt
+  }
+  ${IndexDetailsFragmentDoc}
+`
 export const UserDetailsFragmentDoc = gql`
   fragment UserDetails on User {
     avatarUrl
@@ -1233,6 +1803,14 @@ export const UserDetailsFragmentDoc = gql`
     status
     updatedAt
     username
+  }
+`
+export const WalletDetailsFragmentDoc = gql`
+  fragment WalletDetails on Wallet {
+    createdAt
+    id
+    label
+    updatedAt
   }
 `
 export const LoginDocument = gql`
@@ -1363,6 +1941,76 @@ export const UserFindOneIndexEntryDocument = gql`
     }
   }
   ${IndexEntryDetailsFragmentDoc}
+`
+export const AdminFindManyIndexWalletDocument = gql`
+  query adminFindManyIndexWallet($input: IndexWalletAdminFindManyInput!) {
+    paging: adminFindManyIndexWallet(input: $input) {
+      data {
+        ...IndexWalletDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${IndexWalletDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const AdminFindOneIndexWalletDocument = gql`
+  query adminFindOneIndexWallet($indexWalletId: String!) {
+    item: adminFindOneIndexWallet(indexWalletId: $indexWalletId) {
+      ...IndexWalletDetails
+    }
+  }
+  ${IndexWalletDetailsFragmentDoc}
+`
+export const AdminDeleteIndexWalletDocument = gql`
+  mutation adminDeleteIndexWallet($indexWalletId: String!) {
+    deleted: adminDeleteIndexWallet(indexWalletId: $indexWalletId)
+  }
+`
+export const AdminUpdateIndexWalletDocument = gql`
+  mutation adminUpdateIndexWallet($indexWalletId: String!, $input: IndexWalletAdminUpdateInput!) {
+    updated: adminUpdateIndexWallet(indexWalletId: $indexWalletId, input: $input) {
+      ...IndexWalletDetails
+    }
+  }
+  ${IndexWalletDetailsFragmentDoc}
+`
+export const UserFindManyIndexWalletDocument = gql`
+  query userFindManyIndexWallet($input: IndexWalletUserFindManyInput!) {
+    paging: userFindManyIndexWallet(input: $input) {
+      data {
+        ...IndexWalletDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${IndexWalletDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const UserFindOneIndexWalletDocument = gql`
+  query userFindOneIndexWallet($indexWalletId: String!) {
+    item: userFindOneIndexWallet(indexWalletId: $indexWalletId) {
+      ...IndexWalletDetails
+    }
+  }
+  ${IndexWalletDetailsFragmentDoc}
+`
+export const UserDeleteIndexWalletDocument = gql`
+  mutation userDeleteIndexWallet($indexWalletId: String!) {
+    deleted: userDeleteIndexWallet(indexWalletId: $indexWalletId)
+  }
+`
+export const UserUpdateIndexWalletDocument = gql`
+  mutation userUpdateIndexWallet($indexWalletId: String!, $input: IndexWalletUserUpdateInput!) {
+    updated: userUpdateIndexWallet(indexWalletId: $indexWalletId, input: $input) {
+      ...IndexWalletDetails
+    }
+  }
+  ${IndexWalletDetailsFragmentDoc}
 `
 export const AdminFindManyIndexDocument = gql`
   query adminFindManyIndex($input: IndexAdminFindManyInput!) {
@@ -1521,6 +2169,92 @@ export const UserUpdateUserDocument = gql`
   }
   ${UserDetailsFragmentDoc}
 `
+export const AdminFindManyWalletDocument = gql`
+  query adminFindManyWallet($input: WalletAdminFindManyInput!) {
+    paging: adminFindManyWallet(input: $input) {
+      data {
+        ...WalletDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const AdminFindOneWalletDocument = gql`
+  query adminFindOneWallet($walletId: String!) {
+    item: adminFindOneWallet(walletId: $walletId) {
+      ...WalletDetails
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+`
+export const AdminCreateWalletDocument = gql`
+  mutation adminCreateWallet($input: WalletAdminCreateInput!) {
+    created: adminCreateWallet(input: $input) {
+      ...WalletDetails
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+`
+export const AdminUpdateWalletDocument = gql`
+  mutation adminUpdateWallet($walletId: String!, $input: WalletAdminUpdateInput!) {
+    updated: adminUpdateWallet(walletId: $walletId, input: $input) {
+      ...WalletDetails
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+`
+export const AdminDeleteWalletDocument = gql`
+  mutation adminDeleteWallet($walletId: String!) {
+    deleted: adminDeleteWallet(walletId: $walletId)
+  }
+`
+export const UserFindManyWalletDocument = gql`
+  query userFindManyWallet($input: WalletUserFindManyInput!) {
+    paging: userFindManyWallet(input: $input) {
+      data {
+        ...WalletDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
+`
+export const UserFindOneWalletDocument = gql`
+  query userFindOneWallet($walletId: String!) {
+    item: userFindOneWallet(walletId: $walletId) {
+      ...WalletDetails
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+`
+export const UserCreateWalletDocument = gql`
+  mutation userCreateWallet($input: WalletUserCreateInput!) {
+    created: userCreateWallet(input: $input) {
+      ...WalletDetails
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+`
+export const UserUpdateWalletDocument = gql`
+  mutation userUpdateWallet($walletId: String!, $input: WalletUserUpdateInput!) {
+    updated: userUpdateWallet(walletId: $walletId, input: $input) {
+      ...WalletDetails
+    }
+  }
+  ${WalletDetailsFragmentDoc}
+`
+export const UserDeleteWalletDocument = gql`
+  mutation userDeleteWallet($walletId: String!) {
+    deleted: userDeleteWallet(walletId: $walletId)
+  }
+`
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -1546,6 +2280,14 @@ const AdminFindOneIndexEntryDocumentString = print(AdminFindOneIndexEntryDocumen
 const AdminDeleteIndexEntryDocumentString = print(AdminDeleteIndexEntryDocument)
 const UserFindManyIndexEntryDocumentString = print(UserFindManyIndexEntryDocument)
 const UserFindOneIndexEntryDocumentString = print(UserFindOneIndexEntryDocument)
+const AdminFindManyIndexWalletDocumentString = print(AdminFindManyIndexWalletDocument)
+const AdminFindOneIndexWalletDocumentString = print(AdminFindOneIndexWalletDocument)
+const AdminDeleteIndexWalletDocumentString = print(AdminDeleteIndexWalletDocument)
+const AdminUpdateIndexWalletDocumentString = print(AdminUpdateIndexWalletDocument)
+const UserFindManyIndexWalletDocumentString = print(UserFindManyIndexWalletDocument)
+const UserFindOneIndexWalletDocumentString = print(UserFindOneIndexWalletDocument)
+const UserDeleteIndexWalletDocumentString = print(UserDeleteIndexWalletDocument)
+const UserUpdateIndexWalletDocumentString = print(UserUpdateIndexWalletDocument)
 const AdminFindManyIndexDocumentString = print(AdminFindManyIndexDocument)
 const AdminFindOneIndexDocumentString = print(AdminFindOneIndexDocument)
 const AdminGetAccountInfoDocumentString = print(AdminGetAccountInfoDocument)
@@ -1564,6 +2306,16 @@ const AdminUpdateUserDocumentString = print(AdminUpdateUserDocument)
 const UserFindManyUserDocumentString = print(UserFindManyUserDocument)
 const UserFindOneUserDocumentString = print(UserFindOneUserDocument)
 const UserUpdateUserDocumentString = print(UserUpdateUserDocument)
+const AdminFindManyWalletDocumentString = print(AdminFindManyWalletDocument)
+const AdminFindOneWalletDocumentString = print(AdminFindOneWalletDocument)
+const AdminCreateWalletDocumentString = print(AdminCreateWalletDocument)
+const AdminUpdateWalletDocumentString = print(AdminUpdateWalletDocument)
+const AdminDeleteWalletDocumentString = print(AdminDeleteWalletDocument)
+const UserFindManyWalletDocumentString = print(UserFindManyWalletDocument)
+const UserFindOneWalletDocumentString = print(UserFindOneWalletDocument)
+const UserCreateWalletDocumentString = print(UserCreateWalletDocument)
+const UserUpdateWalletDocumentString = print(UserUpdateWalletDocument)
+const UserDeleteWalletDocumentString = print(UserDeleteWalletDocument)
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     login(
@@ -1866,6 +2618,174 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
           }),
         'userFindOneIndexEntry',
         'query',
+        variables,
+      )
+    },
+    adminFindManyIndexWallet(
+      variables: AdminFindManyIndexWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyIndexWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindManyIndexWalletQuery>(AdminFindManyIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindManyIndexWallet',
+        'query',
+        variables,
+      )
+    },
+    adminFindOneIndexWallet(
+      variables: AdminFindOneIndexWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneIndexWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindOneIndexWalletQuery>(AdminFindOneIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindOneIndexWallet',
+        'query',
+        variables,
+      )
+    },
+    adminDeleteIndexWallet(
+      variables: AdminDeleteIndexWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteIndexWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminDeleteIndexWalletMutation>(AdminDeleteIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminDeleteIndexWallet',
+        'mutation',
+        variables,
+      )
+    },
+    adminUpdateIndexWallet(
+      variables: AdminUpdateIndexWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateIndexWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminUpdateIndexWalletMutation>(AdminUpdateIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminUpdateIndexWallet',
+        'mutation',
+        variables,
+      )
+    },
+    userFindManyIndexWallet(
+      variables: UserFindManyIndexWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyIndexWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindManyIndexWalletQuery>(UserFindManyIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindManyIndexWallet',
+        'query',
+        variables,
+      )
+    },
+    userFindOneIndexWallet(
+      variables: UserFindOneIndexWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindOneIndexWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindOneIndexWalletQuery>(UserFindOneIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindOneIndexWallet',
+        'query',
+        variables,
+      )
+    },
+    userDeleteIndexWallet(
+      variables: UserDeleteIndexWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserDeleteIndexWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserDeleteIndexWalletMutation>(UserDeleteIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userDeleteIndexWallet',
+        'mutation',
+        variables,
+      )
+    },
+    userUpdateIndexWallet(
+      variables: UserUpdateIndexWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserUpdateIndexWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserUpdateIndexWalletMutation>(UserUpdateIndexWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userUpdateIndexWallet',
+        'mutation',
         variables,
       )
     },
@@ -2247,6 +3167,216 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         variables,
       )
     },
+    adminFindManyWallet(
+      variables: AdminFindManyWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindManyWalletQuery>(AdminFindManyWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindManyWallet',
+        'query',
+        variables,
+      )
+    },
+    adminFindOneWallet(
+      variables: AdminFindOneWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFindOneWalletQuery>(AdminFindOneWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFindOneWallet',
+        'query',
+        variables,
+      )
+    },
+    adminCreateWallet(
+      variables: AdminCreateWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminCreateWalletMutation>(AdminCreateWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminCreateWallet',
+        'mutation',
+        variables,
+      )
+    },
+    adminUpdateWallet(
+      variables: AdminUpdateWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminUpdateWalletMutation>(AdminUpdateWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminUpdateWallet',
+        'mutation',
+        variables,
+      )
+    },
+    adminDeleteWallet(
+      variables: AdminDeleteWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminDeleteWalletMutation>(AdminDeleteWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminDeleteWallet',
+        'mutation',
+        variables,
+      )
+    },
+    userFindManyWallet(
+      variables: UserFindManyWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindManyWalletQuery>(UserFindManyWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindManyWallet',
+        'query',
+        variables,
+      )
+    },
+    userFindOneWallet(
+      variables: UserFindOneWalletQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindOneWalletQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserFindOneWalletQuery>(UserFindOneWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userFindOneWallet',
+        'query',
+        variables,
+      )
+    },
+    userCreateWallet(
+      variables: UserCreateWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserCreateWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserCreateWalletMutation>(UserCreateWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userCreateWallet',
+        'mutation',
+        variables,
+      )
+    },
+    userUpdateWallet(
+      variables: UserUpdateWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserUpdateWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserUpdateWalletMutation>(UserUpdateWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userUpdateWallet',
+        'mutation',
+        variables,
+      )
+    },
+    userDeleteWallet(
+      variables: UserDeleteWalletMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserDeleteWalletMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UserDeleteWalletMutation>(UserDeleteWalletDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'userDeleteWallet',
+        'mutation',
+        variables,
+      )
+    },
   }
 }
 export type Sdk = ReturnType<typeof getSdk>
@@ -2354,6 +3484,36 @@ export function IndexUserFindManyInputSchema(): z.ZodObject<Properties<IndexUser
   })
 }
 
+export function IndexWalletAdminFindManyInputSchema(): z.ZodObject<Properties<IndexWalletAdminFindManyInput>> {
+  return z.object({
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
+    walletId: z.string(),
+  })
+}
+
+export function IndexWalletAdminUpdateInputSchema(): z.ZodObject<Properties<IndexWalletAdminUpdateInput>> {
+  return z.object({
+    updatedAt: z.string().nullish(),
+  })
+}
+
+export function IndexWalletUserFindManyInputSchema(): z.ZodObject<Properties<IndexWalletUserFindManyInput>> {
+  return z.object({
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
+    walletId: z.string(),
+  })
+}
+
+export function IndexWalletUserUpdateInputSchema(): z.ZodObject<Properties<IndexWalletUserUpdateInput>> {
+  return z.object({
+    updatedAt: z.string().nullish(),
+  })
+}
+
 export function LoginInputSchema(): z.ZodObject<Properties<LoginInput>> {
   return z.object({
     password: z.string(),
@@ -2409,5 +3569,47 @@ export function UserUserUpdateInputSchema(): z.ZodObject<Properties<UserUserUpda
     avatarUrl: z.string().nullish(),
     developer: z.boolean().nullish(),
     name: z.string().nullish(),
+  })
+}
+
+export function WalletAdminCreateInputSchema(): z.ZodObject<Properties<WalletAdminCreateInput>> {
+  return z.object({
+    id: z.string(),
+    label: z.string().nullish(),
+  })
+}
+
+export function WalletAdminFindManyInputSchema(): z.ZodObject<Properties<WalletAdminFindManyInput>> {
+  return z.object({
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
+  })
+}
+
+export function WalletAdminUpdateInputSchema(): z.ZodObject<Properties<WalletAdminUpdateInput>> {
+  return z.object({
+    label: z.string().nullish(),
+  })
+}
+
+export function WalletUserCreateInputSchema(): z.ZodObject<Properties<WalletUserCreateInput>> {
+  return z.object({
+    id: z.string(),
+    label: z.string().nullish(),
+  })
+}
+
+export function WalletUserFindManyInputSchema(): z.ZodObject<Properties<WalletUserFindManyInput>> {
+  return z.object({
+    limit: z.number().default(10).nullish(),
+    page: z.number().default(1).nullish(),
+    search: z.string().nullish(),
+  })
+}
+
+export function WalletUserUpdateInputSchema(): z.ZodObject<Properties<WalletUserUpdateInput>> {
+  return z.object({
+    label: z.string().nullish(),
   })
 }

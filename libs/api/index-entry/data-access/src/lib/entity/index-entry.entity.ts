@@ -22,7 +22,7 @@ export class IndexEntry {
   @Field()
   program!: string
   @Field()
-  wallet!: string
+  walletId!: string
   @Field(() => GraphQLJSON, { nullable: true })
   data?: Prisma.JsonValue | null
   @Field({ nullable: true })

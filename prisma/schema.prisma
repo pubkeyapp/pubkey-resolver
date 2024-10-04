@@ -36,6 +36,7 @@ model Index {
   dataHash  String?
   label     String?
   entries   IndexEntry[]
+  wallets   IndexWallet[]
 
   @@unique([address, cluster])
 }
@@ -50,12 +51,25 @@ model IndexEntry {
   program      String
   amount       String         @default("0")
   address      String
-  wallet       String
+  walletId     String
   data         Json?
   dataHash     String?
   label        String?
 
-  @@index([cluster, indexAddress, wallet])
+  @@index([cluster, indexAddress, walletId])
+  @@index([walletId])
+}
+
+model IndexWallet {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  index     Index    @relation(fields: [indexId], references: [id], onDelete: Cascade)
+  indexId   String
+  wallet    Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  walletId  String
+
+  @@unique([indexId, walletId])
 }
 
 model User {
@@ -70,6 +84,14 @@ model User {
   status     UserStatus @default(Created)
   username   String     @unique
   identities Identity[]
+}
+
+model Wallet {
+  id        String        @id @default(cuid())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  label     String
+  indexes   IndexWallet[]
 }
 
 enum IdentityProvider {

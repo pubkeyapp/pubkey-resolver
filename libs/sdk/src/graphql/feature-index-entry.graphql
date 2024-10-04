@@ -9,7 +9,7 @@ fragment IndexEntryDetails on IndexEntry {
   data
   dataHash
   program
-  wallet
+  walletId
   updatedAt
 }
 

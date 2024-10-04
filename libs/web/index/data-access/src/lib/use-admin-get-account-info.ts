@@ -1,5 +1,5 @@
 import { IndexAdminResolveInput, sdk } from '@pubkey-resolver/sdk'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export function useAdminGetAccountInfo(input: IndexAdminResolveInput) {
   const query = useQuery({
@@ -13,10 +13,4 @@ export function useAdminGetAccountInfo(input: IndexAdminResolveInput) {
     item,
     query,
   }
-}
-
-export function useAdminResolveWallet(input: IndexAdminResolveInput) {
-  return useMutation({
-    mutationFn: (wallet: string) => sdk.adminResolveWallet({ input, wallet }).then((res) => res.data),
-  })
 }

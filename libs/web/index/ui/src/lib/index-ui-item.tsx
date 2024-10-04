@@ -26,9 +26,17 @@ export function IndexUiItem({
           <Text size="lg" fw={500}>
             {index?.label}
           </Text>
-          <Text size="xs" c="dimmed">
-            {index?.cluster?.toString()?.replace('Solana', 'Solana ')}
-          </Text>
+          <Group gap={2}>
+            <Text span size="xs" c="dimmed">
+              {index?.cluster?.toString()?.replace('Solana', '')}
+            </Text>
+            <Text span size="xs">
+              &middot;
+            </Text>
+            <Text span size="xs" c="dimmed">
+              {index?.type?.toString()?.replace('Solana', '')}
+            </Text>
+          </Group>
         </Stack>
       </Group>
     </UiAnchor>
