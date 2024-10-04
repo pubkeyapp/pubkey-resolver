@@ -18,6 +18,8 @@ export function WebCoreLayout({ children }: { children: ReactNode }) {
           links={[
             { link: '/dashboard', label: 'Dashboard' },
             { link: '/indexes', label: 'Indexes' },
+            { link: '/wallets', label: 'Wallets' },
+            { link: '/admin', label: 'Admin' },
           ]}
           profile={
             <Group gap="xs">

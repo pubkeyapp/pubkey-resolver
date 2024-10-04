@@ -3,6 +3,7 @@ import { publicKey } from '@metaplex-foundation/umi'
 import { Injectable, Logger } from '@nestjs/common'
 import { ApiCoreService, NetworkCluster, SolanaAccountInfo } from '@pubkey-resolver/api-core-data-access'
 import { ApiIndexEntryService } from '@pubkey-resolver/api-index-entry-data-access'
+import { ApiWalletService } from '@pubkey-resolver/api-wallet-data-access'
 import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js'
 import { IndexType } from './entity/index-type.enum'
@@ -12,7 +13,12 @@ import { ensureValidSolanaAddress } from './helpers/ensure-valid-solana-address'
 export class ApiIndexResolverService {
   private readonly logger = new Logger(ApiIndexResolverService.name)
 
-  constructor(private readonly core: ApiCoreService, private readonly indexEntry: ApiIndexEntryService) {}
+  constructor(
+    //
+    private readonly core: ApiCoreService,
+    private readonly indexEntry: ApiIndexEntryService,
+    private readonly wallet: ApiWalletService,
+  ) {}
 
   async resolveIndex({ address, cluster }: IndexResolveInput) {
     ensureValidSolanaAddress(address)
@@ -47,38 +53,35 @@ export class ApiIndexResolverService {
     ensureValidSolanaAddress(address)
     ensureValidSolanaAddress(wallet)
 
-    const found = await this.ensureIndex({ address, cluster })
+    const found = await this.ensureIndexWallet({ address, cluster, wallet })
 
-    if (![IndexType.SolanaCollection, IndexType.SolanaMint].includes(found.type)) {
+    if (![IndexType.SolanaCollection, IndexType.SolanaMint].includes(found.index.type)) {
       throw new Error(`Index ${address} is not a collection or mint on ${cluster}`)
     }
 
-    if (found.type === IndexType.SolanaMint) {
-      this.logger.verbose(`Resolving mint ${address} on ${cluster} for wallet ${wallet}`)
-      const tokenAccounts = await this.core.network.getTokenAccountsByMint({
-        cluster,
-        wallet,
-        programId: found.program,
-        mint: found.address,
-      })
-      const result = await this.indexEntry.data.storeTokenAccounts({
-        index: found,
-        tokenAccounts,
-      })
+    switch (found.index.type) {
+      case IndexType.SolanaMint: {
+        this.logger.verbose(`Resolving mint ${address} on ${cluster} for wallet ${wallet}`)
+        const tokenAccounts = await this.core.network.getTokenAccountsByMint({
+          cluster,
+          wallet,
+          programId: found.index.program,
+          mint: found.index.address,
+        })
+        const result = await this.indexEntry.data.storeTokenAccounts({
+          index: found.index,
+          tokenAccounts,
+        })
 
-      return {
-        found,
-        tokenAccounts,
-        result,
+        return {
+          found,
+          tokenAccounts,
+          result,
+        }
       }
-    }
-
-    // getTokenAccountsByMint
-
-    this.logger.verbose(`Resolving wallet ${address} on ${cluster}`)
-
-    return {
-      found,
+      default:
+        // Not implemented
+        throw new Error(`Index type ${found.index.type} is not implemented`)
     }
   }
 
@@ -103,6 +106,33 @@ export class ApiIndexResolverService {
     const found = await this.core.data.index.findUnique({ where: { address_cluster: { address, cluster } } })
     if (!found) {
       throw new Error(`Index ${address} not found on ${cluster}`)
+    }
+    return found
+  }
+
+  private async ensureIndexWallet(input: IndexResolveInput & { wallet: string }) {
+    const index = await this.ensureIndex(input)
+    const wallet = await this.wallet.data.findOrCreate(input.wallet)
+    const found = await this.core.data.indexWallet.findUnique({
+      where: { indexId_walletId: { indexId: index.id, walletId: wallet.id } },
+      include: { index: true, wallet: true },
+    })
+    if (found) {
+      return found
+    }
+    this.logger.verbose(`Creating index wallet ${index.id} for wallet ${wallet.id}`)
+    return this.core.data.indexWallet.create({
+      data: { indexId: index.id, walletId: wallet.id },
+      include: { index: true, wallet: true },
+    })
+  }
+
+  private async ensureWallet({ wallet }: { wallet: string }) {
+    const found = await this.core.data.wallet.findUnique({
+      where: { id: wallet },
+    })
+    if (!found) {
+      return this.wallet.data.create({ id: wallet })
     }
     return found
   }

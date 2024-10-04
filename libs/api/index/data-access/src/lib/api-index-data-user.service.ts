@@ -10,7 +10,7 @@ export class ApiIndexDataUserService {
 
   async findManyIndex(input: IndexUserFindManyInput): Promise<IndexPaging> {
     return this.data.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ type: 'asc' }, { label: 'asc' }],
       where: getIndexWhereUserInput(input),
       limit: input.limit,
       page: input.page,

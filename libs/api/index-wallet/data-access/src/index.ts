@@ -1,0 +1,7 @@
+export * from './lib/api-index-wallet.data-access.module'
+export * from './lib/api-index-wallet.service'
+export * from './lib/entity/index-wallet.entity'
+export * from './lib/dto/index-wallet-admin-find-many.input'
+export * from './lib/dto/index-wallet-admin-update.input'
+export * from './lib/dto/index-wallet-user-find-many.input'
+export * from './lib/dto/index-wallet-user-update.input'

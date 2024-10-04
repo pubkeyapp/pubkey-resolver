@@ -1,0 +1,64 @@
+fragment IndexWalletDetails on IndexWallet {
+  createdAt
+  id
+  index {
+    ...IndexDetails
+  }
+  indexId
+  walletId
+  updatedAt
+}
+
+query adminFindManyIndexWallet($input: IndexWalletAdminFindManyInput!) {
+  paging: adminFindManyIndexWallet(input: $input) {
+    data {
+      ...IndexWalletDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query adminFindOneIndexWallet($indexWalletId: String!) {
+  item: adminFindOneIndexWallet(indexWalletId: $indexWalletId) {
+    ...IndexWalletDetails
+  }
+}
+
+mutation adminDeleteIndexWallet($indexWalletId: String!) {
+  deleted: adminDeleteIndexWallet(indexWalletId: $indexWalletId)
+}
+
+mutation adminUpdateIndexWallet($indexWalletId: String!, $input: IndexWalletAdminUpdateInput!) {
+  updated: adminUpdateIndexWallet(indexWalletId: $indexWalletId, input: $input) {
+    ...IndexWalletDetails
+  }
+}
+
+query userFindManyIndexWallet($input: IndexWalletUserFindManyInput!) {
+  paging: userFindManyIndexWallet(input: $input) {
+    data {
+      ...IndexWalletDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
+  }
+}
+
+query userFindOneIndexWallet($indexWalletId: String!) {
+  item: userFindOneIndexWallet(indexWalletId: $indexWalletId) {
+    ...IndexWalletDetails
+  }
+}
+
+mutation userDeleteIndexWallet($indexWalletId: String!) {
+  deleted: userDeleteIndexWallet(indexWalletId: $indexWalletId)
+}
+
+mutation userUpdateIndexWallet($indexWalletId: String!, $input: IndexWalletUserUpdateInput!) {
+  updated: userUpdateIndexWallet(indexWalletId: $indexWalletId, input: $input) {
+    ...IndexWalletDetails
+  }
+}

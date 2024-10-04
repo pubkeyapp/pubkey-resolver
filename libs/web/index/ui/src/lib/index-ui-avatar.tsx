@@ -6,5 +6,5 @@ export type IndexUiAvatarProps = UiAvatarProps & {
 }
 
 export function IndexUiAvatar({ index, ...props }: IndexUiAvatarProps) {
-  return <UiAvatar url={undefined} name={index?.address} {...props} />
+  return <UiAvatar url={undefined} name={index?.address} {...props} radius="xs" />
 }

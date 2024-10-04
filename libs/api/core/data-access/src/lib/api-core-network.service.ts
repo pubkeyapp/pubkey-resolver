@@ -39,7 +39,7 @@ export class ApiCoreNetworkService {
       const connection = this.ensureConnection(cluster as NetworkCluster)
       try {
         const version = await connection.getVersion()
-        this.logger.debug(`[${cluster}] Connected to cluster version ${version['solana-core']}`)
+        this.logger.debug(`[${cluster}] Connected to cluster ${cluster} version ${version['solana-core']}`)
       } catch (error) {
         this.logger.error(`[${cluster}] Error connecting to cluster, ${error}`)
       }
@@ -108,12 +108,17 @@ export class ApiCoreNetworkService {
 
   private listWebhooks(cluster: NetworkCluster) {
     const helius = this.ensureHelius(cluster)
-    helius.getAllWebhooks().then((webhooks) => {
-      this.logger.debug(`[${cluster}] Helius Webhooks: ${webhooks.length} configured`)
-      for (const webhook of webhooks) {
-        this.logger.debug(`[${cluster}] - Webhook: ${webhook.accountAddresses.length} addresses`)
-      }
-    })
+    helius
+      .getAllWebhooks()
+      .then((webhooks) => {
+        this.logger.debug(`[${cluster}] Helius Webhooks: ${webhooks.length} configured`)
+        for (const webhook of webhooks) {
+          this.logger.debug(`[${cluster}] - Webhook: ${webhook.accountAddresses.length} addresses`)
+        }
+      })
+      .catch((err) => {
+        this.logger.error(`[${cluster}] Error listing webhooks: ${err}`)
+      })
   }
 
   async getTokenAccountsByMint({

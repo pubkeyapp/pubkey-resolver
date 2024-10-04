@@ -65,7 +65,7 @@ export class ApiIndexEntryDataService {
       const dataHash = hash(data)
       const program = tokenAccount.account.owner.toString()
       const amount = tokenAccount.account.data.parsed.info.tokenAmount.uiAmountString ?? '0'
-      const wallet = tokenAccount.account.data.parsed.info.owner.toString()
+      const walletId = tokenAccount.account.data.parsed.info.owner.toString()
 
       if (!found) {
         this.logger.verbose(`[${index.id}] Creating token account ${tokenAccount.pubkey.toString()}`)
@@ -78,7 +78,7 @@ export class ApiIndexEntryDataService {
           indexAddress: index.address,
           label: index.label,
           program,
-          wallet,
+          walletId,
         })
         items.push(created)
         continue
@@ -92,7 +92,7 @@ export class ApiIndexEntryDataService {
       }
 
       this.logger.verbose(`[${index.id}] Updating token account ${tokenAccount.pubkey.toString()}`)
-      const updated = await this.update(found.id, { amount, data, dataHash, wallet })
+      const updated = await this.update(found.id, { amount, data, dataHash, walletId })
       items.push(updated)
     }
     return items

@@ -25,8 +25,12 @@
       "@pubkey-resolver/api-index-entry-data-access": ["libs/api/index-entry/data-access/src/index.ts"],
       "@pubkey-resolver/api-index-entry-feature": ["libs/api/index-entry/feature/src/index.ts"],
       "@pubkey-resolver/api-index-feature": ["libs/api/index/feature/src/index.ts"],
+      "@pubkey-resolver/api-index-wallet-data-access": ["libs/api/index-wallet/data-access/src/index.ts"],
+      "@pubkey-resolver/api-index-wallet-feature": ["libs/api/index-wallet/feature/src/index.ts"],
       "@pubkey-resolver/api-user-data-access": ["libs/api/user/data-access/src/index.ts"],
       "@pubkey-resolver/api-user-feature": ["libs/api/user/feature/src/index.ts"],
+      "@pubkey-resolver/api-wallet-data-access": ["libs/api/wallet/data-access/src/index.ts"],
+      "@pubkey-resolver/api-wallet-feature": ["libs/api/wallet/feature/src/index.ts"],
       "@pubkey-resolver/resolvers": ["packages/resolvers/src/index.ts"],
       "@pubkey-resolver/sdk": ["libs/sdk/src/index.ts"],
       "@pubkey-resolver/tools": ["libs/tools/src/index.ts"],
@@ -46,11 +50,17 @@
       "@pubkey-resolver/web-index-entry-ui": ["libs/web/index-entry/ui/src/index.ts"],
       "@pubkey-resolver/web-index-feature": ["libs/web/index/feature/src/index.ts"],
       "@pubkey-resolver/web-index-ui": ["libs/web/index/ui/src/index.ts"],
+      "@pubkey-resolver/web-index-wallet-data-access": ["libs/web/index-wallet/data-access/src/index.ts"],
+      "@pubkey-resolver/web-index-wallet-feature": ["libs/web/index-wallet/feature/src/index.ts"],
+      "@pubkey-resolver/web-index-wallet-ui": ["libs/web/index-wallet/ui/src/index.ts"],
       "@pubkey-resolver/web-settings-feature": ["libs/web/settings/feature/src/index.ts"],
       "@pubkey-resolver/web-solana-data-access": ["libs/web/solana/data-access/src/index.ts"],
       "@pubkey-resolver/web-user-data-access": ["libs/web/user/data-access/src/index.ts"],
       "@pubkey-resolver/web-user-feature": ["libs/web/user/feature/src/index.ts"],
-      "@pubkey-resolver/web-user-ui": ["libs/web/user/ui/src/index.ts"]
+      "@pubkey-resolver/web-user-ui": ["libs/web/user/ui/src/index.ts"],
+      "@pubkey-resolver/web-wallet-data-access": ["libs/web/wallet/data-access/src/index.ts"],
+      "@pubkey-resolver/web-wallet-feature": ["libs/web/wallet/feature/src/index.ts"],
+      "@pubkey-resolver/web-wallet-ui": ["libs/web/wallet/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

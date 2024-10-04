@@ -20,11 +20,14 @@ export function IndexEntryUiItem({
 
   return (
     <UiAnchor to={to ?? undefined} underline="never" {...anchorProps}>
-      <Group gap="sm" {...groupProps}>
+      <Group gap="sm" {...groupProps} wrap="nowrap">
         <IndexEntryUiAvatar indexEntry={indexEntry} {...avatarProps} />
         <Stack gap={1}>
           <Text size="lg" fw={500}>
             {indexEntry?.label}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {indexEntry?.walletId}
           </Text>
         </Stack>
       </Group>

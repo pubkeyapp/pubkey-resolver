@@ -1,8 +1,9 @@
-import { ActionIcon, Anchor, Group, ScrollArea } from '@mantine/core'
+import { ActionIcon, Group, ScrollArea } from '@mantine/core'
 import { Index } from '@pubkey-resolver/sdk'
 import { IconPencil, IconTrash } from '@tabler/icons-react'
 import { DataTable, DataTableProps } from 'mantine-datatable'
 import { Link } from 'react-router-dom'
+import { IndexUiItem } from './index-ui-item'
 
 export function AdminIndexUiTable({
   deleteIndex,
@@ -32,15 +33,9 @@ export function AdminIndexUiTable({
         columns={[
           {
             accessor: 'address',
-            render: (item) => (
-              <Anchor component={Link} to={`./${item.id}`} size="sm" fw={500}>
-                {item.label}
-              </Anchor>
-            ),
+            render: (item) => <IndexUiItem to={`./${item.id}`} index={item} />,
           },
           { accessor: 'address' },
-          { accessor: 'cluster' },
-          { accessor: 'type' },
           {
             accessor: 'actions',
             title: 'Actions',
