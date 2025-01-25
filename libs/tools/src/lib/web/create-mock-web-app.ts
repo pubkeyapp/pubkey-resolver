@@ -9,7 +9,6 @@ export async function createMockWebApp(tree: Tree, app: string) {
     e2eTestRunner: 'none',
     linter: Linter.EsLint,
     name: app,
-    projectNameAndRootFormat: 'as-provided',
     routing: true,
     skipFormat: true,
     style: 'css',
@@ -19,7 +18,6 @@ export async function createMockWebApp(tree: Tree, app: string) {
     directory: `libs/${app}/core/data-access`,
     linter: Linter.EsLint,
     name: `${app}-core-data-access`,
-    projectNameAndRootFormat: 'as-provided',
     skipFormat: true,
     style: 'css',
   })
@@ -29,7 +27,6 @@ export async function createMockWebApp(tree: Tree, app: string) {
     directory: `libs/${app}/core/feature`,
     linter: Linter.EsLint,
     name: `${app}-core-feature`,
-    projectNameAndRootFormat: 'as-provided',
     skipFormat: true,
     style: 'css',
   })
@@ -39,7 +36,6 @@ export async function createMockWebApp(tree: Tree, app: string) {
     directory: `libs/${app}/user/feature`,
     linter: Linter.EsLint,
     name: `${app}-user-feature`,
-    projectNameAndRootFormat: 'as-provided',
     skipFormat: true,
     style: 'css',
   })
@@ -73,8 +69,7 @@ async function createMockComponent(tree: Tree, project: string, name: string, co
   const config = getProjects(tree).get(project)
   await componentGenerator(tree, {
     name,
-    directory: `${config.sourceRoot}/lib/`,
-    nameAndDirectoryFormat: 'as-provided',
+    path: `${config.sourceRoot}/lib/`,
     style: 'none',
     skipTests: true,
     skipFormat: true,
